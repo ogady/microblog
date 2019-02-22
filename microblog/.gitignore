@@ -1,0 +1,11 @@
+<microblog>
+__pycache__
+staticfiles
+local_settings.py
+db.sqlite3
+*.py[co]
+.vscode/settings.json
+settings.json
+/anicolle/bin
+/anicolle/lib
+/anicolle/lib64
