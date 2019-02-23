@@ -10,7 +10,7 @@
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         {# {% %}　プログラム的な命令 #}
         {# {{ }}　値の表示 #}
-        {#object_listという変数名はListViewで定義されているので、固定#}
+        {# object_listという変数名はListViewで定義されているので、固定 Viewで指定すれば変更もできる #}
         {% for blog in blog_list %}
         <div class="post-preview">
             <a href="{% url 'detail' blog.id %}">
@@ -18,7 +18,9 @@
                     {{blog.content}}
                 </h3>
             </a>
-            <p class="post-meta">{{blog.posted_date}}</p>
+
+            {# timesinceは”|”で渡されたdateから現在までを計算するDjangoの組み込み関数 #}
+            <p class="post-meta">{{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}</p>
         </div>
         {% endfor %}
     </div>
