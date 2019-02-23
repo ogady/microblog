@@ -25,6 +25,8 @@ SECRET_KEY = 'd(z872(q*%6mp@^##@$ikc&g&@f*!+to85136wl026vabauj9%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+ALLOWED_HOSTS = ['*']
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 
 ]
 
@@ -132,6 +135,7 @@ STATICFILES_DIRS = (
 )
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+SECURE_PROXY_SSL_HEADER = {'HTTP_X_FORWARDED_PRONTO', 'http'}
 
 # ↓を設定しないと、defaultのaccounts/profile/にリダイレクトされる
 LOGIN_REDIRECT_URL = '/'
@@ -139,6 +143,7 @@ LOGIN_REDIRECT_URL = '/'
 try:
     from .local_settings import *
 except ImportError:
+    print("ローカル無理だった")
     pass
 
 if not DEBUG:
