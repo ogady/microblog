@@ -19,8 +19,6 @@ from whitenoise.django import DjangoWhiteNoise
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'microblog.settings.heroku')
 
 application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
-
 
 # スリープ防止：デプロイしたWebサーバー自体が自分にアクセス
 def awake():
