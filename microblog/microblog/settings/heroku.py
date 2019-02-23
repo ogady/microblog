@@ -10,21 +10,21 @@ DEBUG = False
 DATABASES = {
     'default': {
         # sqlite
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
         # MySQL
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'anicolle',
-        'USER': 'root',
-        'PASSWORD': 'password',
-        'HOST': '*',  # (ローカルホストなら空でも可)
-        'PORT': '*',  # (デフォルトポートなら空でも可)
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'anicolle',
+        # 'USER': 'root',
+        # 'PASSWORD': 'password',
+        # 'HOST': '*',  # (ローカルホストなら空でも可)
+        # 'PORT': '*',  # (デフォルトポートなら空でも可)
 
     }
 }
 
-SECURE_PROXY_SSL_HEADER = { 'HTTP_X_FORWARDED_PRONTO', 'http'}
+SECURE_PROXY_SSL_HEADER = {'HTTP_X_FORWARDED_PRONTO', 'http'}
 
 ALLOWED_HOSTS = ["*"]
 
