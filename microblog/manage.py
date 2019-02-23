@@ -5,7 +5,7 @@ import sys
 if __name__ == '__main__':
 
     # settings.pyを分割する場合は、場所を教える必要がある。
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'microblog.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
