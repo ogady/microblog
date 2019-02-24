@@ -3,7 +3,7 @@
 {% block body %}
 
     <h1>編集</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <table class="table">
             {% csrf_token %}
             {{ form }}

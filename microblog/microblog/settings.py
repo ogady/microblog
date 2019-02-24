@@ -140,6 +140,10 @@ SECURE_PROXY_SSL_HEADER = {'HTTP_X_FORWARDED_PRONTO', 'http'}
 # ↓を設定しないと、defaultのaccounts/profile/にリダイレクトされる
 LOGIN_REDIRECT_URL = '/'
 
+# mediaファイルのpathの定義
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 try:
     from .local_settings import *
 except ImportError:

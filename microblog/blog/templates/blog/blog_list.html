@@ -17,6 +17,9 @@
                 <h3 class="post-title">
                     {{blog.content}}
                 </h3>
+                    {% if blog.photo %}
+                    <p class="post-meta">※画像あり</p>
+                    {% endif %}
             </a>
 
             {# timesinceは”|”で渡されたdateから現在までを計算するDjangoの組み込み関数 #}

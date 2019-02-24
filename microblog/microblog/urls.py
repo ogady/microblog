@@ -18,6 +18,11 @@ from django.urls import path
 from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView
 from django.contrib.auth.views import LoginView, LogoutView
 
+# 画像UL用
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.static import serve
+
 urlpatterns = [
     # path('<URL>', views関数, ニックネーム(任意)),
     path('admin/', admin.site.urls),
@@ -34,3 +39,7 @@ urlpatterns = [
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
 ]
+
+# 画像UL用
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
