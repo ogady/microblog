@@ -4,7 +4,7 @@ from .models import Blog
 
 class BlogForm(forms.ModelForm):
     content = forms.CharField(widget=forms.TextInput(attrs={"size": 60}))
-    photo = forms.ImageField()
+    photo = forms.ImageField(required=False)
 
     class Meta:
         model = Blog
