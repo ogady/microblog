@@ -1,22 +1,25 @@
 {% extends "base.html" %}
 
 {% block body %}
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                {# {% %}　プログラム的な命令 #}
-                {# {{ }}　値の表示 #}
-                {# object==データが入っている変数、デフォルト値 #}
-                                <div class="post-preview">
-                    <h2 class="post-title">
-                            {{object.content}}
-                    </h2>
-                    <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}</p>
-                </div>
-
-                {% if user.is_authenticated %}
-                <a href="{% url 'update' object.id %}"  class = "btn btn-primary">編集</a>
-                <a href="{% url 'delete' object.id %}"  class = "btn btn-danger">削除</a>
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
+        {# {% %}　プログラム的な命令 #}
+        {# {{ }}　値の表示 #}
+        {# object==データが入っている変数、デフォルト値 #}
+        <div class="post-preview">
+            <h2 class="post-title">
+                {{object.content}}
+            </h2>
+                {% if object.photo %}
+                <img src="{{ object.photo.url }}" class="img-responsive">
                 {% endif %}
-            </div>
+            <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}</p>
         </div>
+
+        {% if user.is_authenticated %}
+        <a href="{% url 'update' object.id %}" class="btn btn-primary">編集</a>
+        <a href="{% url 'delete' object.id %}" class="btn btn-danger">削除</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
