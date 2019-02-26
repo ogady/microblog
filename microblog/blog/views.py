@@ -10,7 +10,6 @@ import requests
 import json
 
 
-
 # Create your views here.
 
 
@@ -100,17 +99,14 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-class AmineApiCall():
+def title_call(request):
+    if request.POST['title']:
+        title = request.POST['title']
+        endpoint = 'https://api.animedb.moe/madb/anime/search'
+        query = {
+            'title': title,
+        }
 
-    def title_call(self, request):
-    
-        if request.POST['title']:
-            title = request.POST['title']
-            endpoint = 'https://api.animedb.moe/madb/anime/search'
-            query = {
-                'title': title,
-                }
-
-            response = requests.get(endpoint, params=query)
-            print("response", response.json())
-            return render(request, 'index.html')
+        response = requests.get(endpoint, params=query)
+        print("response", response.json())
+        return render(request, 'index.html')

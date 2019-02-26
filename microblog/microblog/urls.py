@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView, AmineApiCall
+from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView
 from django.contrib.auth.views import LoginView, LogoutView
+from blog import views
 
 # 画像UL用
 from django.conf import settings
@@ -39,6 +40,7 @@ urlpatterns = [
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
     # API呼び出し用viewとのルーティング
+    path('search', views.title_call, name='search'),
 ]
 
 # 画像UL用
