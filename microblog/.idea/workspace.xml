@@ -9,13 +9,11 @@
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microblog/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/microblog/Procfile" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog/__init__.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/microblog/blog/templates/blog/blog_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/microblog/blog/templates/blog/blog_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microblog/db.sqlite3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/microblog/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog/settings.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microblog/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microblog/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/microblog/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microblog/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/microblog/wsgi.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,18 +23,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/blog/admin.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="84">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/runtime.txt">
           <provider selected="true" editor-type-id="text-editor">
@@ -73,13 +59,18 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Procfile">
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <caret column="41" selection-start-column="41" selection-end-column="41" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db.sqlite3">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -95,7 +86,23 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="147">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/microblog/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-70" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/microblog/wsgi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="399">
+              <caret line="24" column="14" lean-forward="true" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -136,7 +143,6 @@
         <option value="$PROJECT_DIR$/microblog/settings/dev.py" />
         <option value="$PROJECT_DIR$/microblog/settings/prod.py" />
         <option value="$PROJECT_DIR$/Procfile" />
-        <option value="$PROJECT_DIR$/microblog/wsgi.py" />
         <option value="$PROJECT_DIR$/microblog/settings/heroku.py" />
         <option value="$PROJECT_DIR$/microblog/settings/common.py" />
         <option value="$PROJECT_DIR$/microblog/local_settings.py" />
@@ -154,6 +160,7 @@
         <option value="$PROJECT_DIR$/microblog/urls.py" />
         <option value="$PROJECT_DIR$/blog/tests.py" />
         <option value="$PROJECT_DIR$/runtime.txt" />
+        <option value="$PROJECT_DIR$/microblog/wsgi.py" />
       </list>
     </option>
   </component>
@@ -190,7 +197,7 @@
             <path>
               <item name="microblog" type="b2602c69:ProjectViewProjectNode" />
               <item name="microblog" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="microblog" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -270,6 +277,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.13540569" />
@@ -389,7 +397,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/microblog/wsgi.py" />
     <entry file="file://$PROJECT_DIR$/manage.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -398,11 +405,6 @@
             <element signature="e#22#31#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db.sqlite3">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1071" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/blog/models.py">
@@ -450,7 +452,6 @@
     <entry file="file://$PROJECT_DIR$/microblog/.gitignore" />
     <entry file="file://$PROJECT_DIR$/microblog/local_settings.py" />
     <entry file="file://$PROJECT_DIR$/microblog/settings.py" />
-    <entry file="file://$PROJECT_DIR$/microblog/urls.py" />
     <entry file="file://$PROJECT_DIR$/blog/templates/blog/blog_list.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -499,13 +500,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/requirements.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -517,6 +511,28 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="41" selection-start-column="41" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db.sqlite3">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/microblog/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-70" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/microblog/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="24" column="14" lean-forward="true" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
         </state>
       </provider>
     </entry>
