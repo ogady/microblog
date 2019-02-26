@@ -6,6 +6,9 @@ from django.urls import reverse_lazy
 from .forms import BlogForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+import requests
+import json
+
 
 
 # Create your views here.
@@ -42,7 +45,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # self.requestオブジェクトに”保存しました”を込める
+        # self.requestオブジェクトに”保存に失敗しました。”を込める
         messages.error(self.request, "保存に失敗しました。")
         return super().form_invalid(form)
 
@@ -69,13 +72,13 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
 
     # バリデート後
     def form_valid(self, form):
-        # self.requestオブジェクトに”保存しました”を込める
+        # self.requestオブジェクトに”更新しました。”を込める
         messages.success(self.request, "更新しました。")
         # super()で継承元の処理を返すのがお約束
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        # self.requestオブジェクトに”保存しました”を込める
+        # self.requestオブジェクトに”更新に失敗しました。”を込める
         messages.error(self.request, "更新に失敗しました。")
         return super().form_invalid(form)
 
@@ -96,7 +99,18 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         # super()で継承元の処理を返すのがお約束
         return super().delete(request, *args, **kwargs)
 
-    def form_invalid(self, form):
-        # self.requestオブジェクトに”保存しました”を込める
-        messages.error(self.request, "更新に失敗しました。")
-        return super().form_invalid(form)
+
+class AmineApiCall():
+
+    def title_call(self, request):
+    
+        if request.POST['title']:
+            title = request.POST['title']
+            endpoint = 'https://api.animedb.moe/madb/anime/search'
+            query = {
+                'title': title,
+                }
+
+            response = requests.get(endpoint, params=query)
+            print("response", response.json())
+            return render(request, 'index.html')
