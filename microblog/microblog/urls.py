@@ -15,14 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView
+from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView, SearchView
 from django.contrib.auth.views import LoginView, LogoutView
 from blog import views
 
 # 画像UL用
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.static import serve
 
 urlpatterns = [
     # path('<URL>', views関数, ニックネーム(任意)),
@@ -40,7 +39,7 @@ urlpatterns = [
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
 
-    path('search', views.search, name='search'),
+    path('search', SearchView.as_view(), name='search'),
     # API呼び出し用viewとのルーティング
     path('api_call', views.api_call, name='api_call'),
 ]

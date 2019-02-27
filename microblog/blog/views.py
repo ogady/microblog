@@ -1,6 +1,6 @@
 from django.contrib.messages import success
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Blog
 from django.urls import reverse_lazy
 from .forms import BlogForm
@@ -100,8 +100,9 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-def search(request):
-    return TemplateResponse(request, 'blog/anime_search.html')
+class SearchView(TemplateView):
+
+    template_name = "blog/anime_search.html"  # 必須
 
 
 def api_call(request):
@@ -112,13 +113,7 @@ def api_call(request):
 
         response = requests.get(url)
         anime_list = response.json()
-        print(response.status_code)
         print(response.json())
-
-        #for anime in anime_list:
-
-            # json.loadsはstr、json.loadはdictionaly
-            # print(anime)
 
         context = {'anime_list': anime_list}
 

@@ -6,8 +6,9 @@
 <form action="{% url 'api_call' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {% for anime in anime_list %}
-        {{ anime.id }}
-        {{ anime.title }}
+    <p>ID:{{ anime.id }}</p>
+    <p>Title:{{ anime.title }}</p>
+    <hr>
     {% endfor%}
 </form>
 
