@@ -39,8 +39,10 @@ urlpatterns = [
     path('login', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
+
+    path('search', views.search, name='search'),
     # API呼び出し用viewとのルーティング
-    path('search', views.title_call, name='search'),
+    path('api_call', views.api_call, name='api_call'),
 ]
 
 # 画像UL用

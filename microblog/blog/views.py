@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from .forms import BlogForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.template.response import TemplateResponse
 import requests
 import json
 
@@ -99,14 +100,26 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-def title_call(request):
-    if request.POST['title']:
-        title = request.POST['title']
-        endpoint = 'https://api.animedb.moe/madb/anime/search'
-        query = {
-            'title': title,
-        }
+def search(request):
+    return TemplateResponse(request, 'blog/anime_search.html')
 
-        response = requests.get(endpoint, params=query)
-        print("response", response.json())
-        return render(request, 'index.html')
+
+def api_call(request):
+    if request.POST["season"]:
+        season = request.POST["season"]
+        endpoint = 'http://api.moemoe.tokyo/anime/v1/master/'
+        url = endpoint+season
+
+        response = requests.get(url)
+        anime_list = response.json()
+        print(response.status_code)
+        print(response.json())
+
+        #for anime in anime_list:
+
+            # json.loadsはstr、json.loadはdictionaly
+            # print(anime)
+
+        context = {'anime_list': anime_list}
+
+        return render(request, 'blog/anime_list.html', context)
