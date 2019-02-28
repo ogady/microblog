@@ -7,10 +7,18 @@
     {% csrf_token %}
     <div class="form-group row">
         <div class="col-sm-3">
-            <input type="text" class="form-control sbc_field" name="season" placeholder="2018"/>
+            <input type="text" class="form-control sbc_field" name="year" placeholder="2019"/>
+            <input type="text" class="form-control sbc_field" name="cours" placeholder="春"/>
         </div>
         <button type="submit" class="btn btn-primary" name='action' value="search">探す</button>
     </div>
 </form>
+{% if anime_list %}
+    {% for anime in anime_list %}
+    <p>ID:{{ anime.id }}</p>
+    <p>Title:{{ anime.title }}</p>
+    <hr>
+    {% endfor%}
+{% endif %}
 
 {% endblock %}

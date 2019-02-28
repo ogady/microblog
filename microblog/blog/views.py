@@ -106,15 +106,21 @@ class SearchView(TemplateView):
 
 
 def api_call(request):
-    if request.POST["season"]:
-        season = request.POST["season"]
-        endpoint = 'http://api.moemoe.tokyo/anime/v1/master/'
-        url = endpoint+season
 
-        response = requests.get(url)
-        anime_list = response.json()
-        print(response.json())
+    global url
 
-        context = {'anime_list': anime_list}
+    if request.POST["year"]:
+        query = request.POST["year"]
+        endpoint = 'http://api.moemoe.tokyo/anime/v1/master'
+        url = endpoint+ "/"+query
 
-        return render(request, 'blog/anime_list.html', context)
+    if request.POST["cours"]:
+        query = request.POST["cours"]
+        url = url + "/" + query
+
+    response = requests.get(url)
+    anime_list = response.json()
+    print(response.json())
+
+    context = {'anime_list': anime_list}
+    return render(request, 'blog/anime_search.html', context)
