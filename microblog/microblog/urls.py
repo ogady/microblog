@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView, SearchView
+from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView
 from django.contrib.auth.views import LoginView, LogoutView
 from blog import views
 
@@ -38,10 +38,8 @@ urlpatterns = [
     path('login', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
-
-    path('search', SearchView.as_view(), name='search'),
     # API呼び出し用viewとのルーティング
-    path('api_call', views.api_call, name='api_call'),
+    path('search', views.api_call, name='search'),
 ]
 
 # 画像UL用
