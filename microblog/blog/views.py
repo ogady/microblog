@@ -1,16 +1,13 @@
-from django.contrib.messages import success
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate 
+from django.contrib.auth import login, authenticate
 from .models import Blog, User
-from django.urls import reverse_lazy 
-from .forms import BlogForm
+from django.urls import reverse_lazy
+from .forms import BlogForm, SearchForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.template.response import TemplateResponse
 import requests
-import json
 
 
 # Create your views here.
@@ -28,7 +25,6 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
-
     model = Blog
     print("form_class")
     form_class = BlogForm
@@ -105,27 +101,60 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
 
 
 # アニメ検索機能
-class SearchView(TemplateView):
-
-    template_name = "blog/anime_search.html"  # 必須
-
-
 def api_call(request):
 
-    global url
+    # リクエストがpostであることをチェック
+    if request.method == 'POST':
+        # フォームデータを取得
+        form = SearchForm(request.POST)
+        # フォームのデータが安全かチェック
+        if form.is_valid():
 
-    if request.POST["year"]:
-        query = request.POST["year"]
-        endpoint = 'http://api.moemoe.tokyo/anime/v1/master'
-        url = endpoint+ "/"+query
+            # データを受け取る
+            year = form.cleaned_data['year']
+            cours = form.cleaned_data['cours']
 
-    if request.POST["cours"]:
-        query = request.POST["cours"]
-        url = url + "/" + query
+            if year & year <= 9999:
+                query = str(year)
+                endpoint = 'http://api.moemoe.tokyo/anime/v1/master'
+                url = endpoint + "/" + query
 
-    response = requests.get(url)
-    anime_list = response.json()
-    print(response.json())
+            else:
+                form = SearchForm()
+                messages = ["放送年は4桁の数字で入力してください"]
+                context = {'messages': messages, 'form': form}
 
-    context = {'anime_list': anime_list}
+                return render(request, 'blog/anime_search.html', context)
+
+            if cours:
+                query = str(cours)
+                url = url + "/" + query
+
+            response = requests.get(url)
+            anime_list = response.json()
+
+            form = SearchForm()
+
+            context = {'anime_list': anime_list, 'form' : form}
+
+            return render(request, 'blog/anime_search.html', context)
+
+        else:
+            form = SearchForm()
+            messages = ["放送年は4桁の数字で入力してください"]
+            context = {'messages': messages, 'form': form}
+
+            return render(request, 'blog/anime_search.html', context)
+    else:
+        """
+        動作順序①
+        """
+        # 最初にブラウザから呼び出されるときに使用するフォームクラスを指定
+        form = SearchForm()
+    """
+    動作順序②
+    """
+    # 作成されたフォームオブジェクトをコンテキストへ格納
+    context = {'form': form}
+    # 最初にブラウザから呼び出されたときに指定テンプレートとコンテキストで描画する
     return render(request, 'blog/anime_search.html', context)
