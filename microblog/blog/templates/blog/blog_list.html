@@ -23,7 +23,9 @@
             </a>
 
             {# timesinceは”|”で渡されたdateから現在までを計算するDjangoの組み込み関数 #}
-            <p class="post-meta">{{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}</p>
+            <p class="post-meta">
+            <b>{{blog.user.nick_name}}</b> ｜ {{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}
+            </p>
         </div>
         {% endfor %}
     </div>
