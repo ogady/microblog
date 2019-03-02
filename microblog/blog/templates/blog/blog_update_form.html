@@ -1,15 +1,31 @@
 {% extends "base.html" %}
-
+{% load widget_tweaks %}
 {% block body %}
 
-    <h1>編集</h1>
-    <form method="post" enctype="multipart/form-data">
+<h1>編集</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <div class="form-group row">
         <table class="table">
             {% csrf_token %}
-            {{ form }}
+            <input type="hidden" name="user" id="id_user" value="{{ user.id }}">
+            <div class="col-sm-9">
+                {{ form.content.label }}:
+                {{ form.content|add_class:'form-control' }}
+            </div>
+            <div class="col-sm-9">
+                {{ form.photo.label }}:
+                {{ form.photo|add_class:'btn btn-default' }}
+            </div>
         </table>
-        <button class = "btn btn-primary" type="submit">保存</button>
-        <a href="{% url 'detail' object.id %}"  class = "btn btn-defult">キャンセル</a>
-   </form>
+    </div>
+    <hr>
+    <div class="form-group row">
+        <div class="col-sm">
+            <button class="btn btn-primary" type="submit">保存</button>
+            <a href="{% url 'detail' object.id %}" class="btn btn-warning">キャンセル</a>
+        </div>
 
+    </div>
+</form>
 {% endblock %}
