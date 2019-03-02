@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate 
-from .models import Blog, User
+from .models import Blog
 from django.urls import reverse_lazy 
 from .forms import BlogForm
 from django.contrib import messages
@@ -28,9 +28,7 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
-
     model = Blog
-    print("form_class")
     form_class = BlogForm
 
     # LoginRequiredMixinを使う際は定義する必要あり
