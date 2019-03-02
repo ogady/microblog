@@ -1,8 +1,10 @@
 from django.contrib.messages import success
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate 
 from .models import Blog
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy 
 from .forms import BlogForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -94,12 +96,13 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
 
     # バリデート後
     def delete(self, request, *args, **kwargs):
-        # self.requestオブジェクトに”保存しました”を込める
+        # self.requestオブジェクトに”削除しました。”を込める
         messages.success(self.request, "削除しました。")
         # super()で継承元の処理を返すのがお約束
         return super().delete(request, *args, **kwargs)
 
 
+# アニメ検索機能
 class SearchView(TemplateView):
 
     template_name = "blog/anime_search.html"  # 必須
