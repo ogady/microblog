@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from blog.views import BlogListView, BlogDetailView, BlogCreateView,BlogUpdateView, BlogDeleteView
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 from blog import views
 
 # 画像UL用
@@ -26,20 +25,26 @@ from django.conf.urls.static import static
 urlpatterns = [
     # path('<URL>', views関数, ニックネーム(任意)),
     path('admin/', admin.site.urls),
-    path('', BlogListView.as_view(), name="index"),
+    path('', views.BlogListView.as_view(), name="index"),
 
     # 受け取ったintをpkに代入する
-    path('<int:pk>', BlogDetailView.as_view(), name="detail"),
-    path('create', BlogCreateView.as_view(), name="create"),
-    path('<int:pk>/update', BlogUpdateView.as_view(), name="update"),
-    path('<int:pk>/delete', BlogDeleteView.as_view(), name="delete"),
+    path('<int:pk>', views.BlogDetailView.as_view(), name="detail"),
+    path('create', views.BlogCreateView.as_view(), name="create"),
+    path('<int:pk>/update', views.BlogUpdateView.as_view(), name="update"),
+    path('<int:pk>/delete', views.BlogDeleteView.as_view(), name="delete"),
 
     # defaultだとregistration/loginを探しにいくので、template_nameで指定する。
-    path('login', LoginView.as_view(template_name='login.html'), name='login'),
+    path('login', views.Login.as_view(template_name='login.html'), name='login'),
     path('logout', LogoutView.as_view(template_name='logout.html'), name='logout'),
 
     # API呼び出し用viewとのルーティング
     path('search', views.api_call, name='search'),
+
+    # ユーザー登録機能のルーティング
+    path('user_create/', views.UserCreate.as_view(template_name='user_create.html'), name='user_create'),
+    path('user_create/done', views.UserCreateDone.as_view(template_name='user_create_done.html'),
+         name='user_create_done'),
+
 ]
 
 # 画像UL用

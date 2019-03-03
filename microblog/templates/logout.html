@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block body %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <h3>ログアウトしました。</h3>
 
-    <h3>ログアウトしました。</h3>
-
-    <div class="form-group row">
-        <div class="col-sm">
-            <a href="{% url 'index' %}"  class = "btn btn-primary btn-block">HOME</a>
+        <div class="form-group row">
+            <div class="col-sm">
+                <a href="{% url 'index' %}" class="btn btn-primary btn-block">HOME</a>
+            </div>
         </div>
     </div>
+</div>
 
 {% endblock %}

@@ -62,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """カスタムユーザーモデル."""
 
     email = models.EmailField(_('email address'), unique=True)
-    nick_name = models.CharField(_('nick name'), max_length=50, blank=False)
+    nick_name = models.CharField(_('nick name'), max_length=50, blank=False, db_column="ユーザー名")
 
     is_staff = models.BooleanField(
         _('staff status'),
