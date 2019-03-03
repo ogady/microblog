@@ -32,7 +32,9 @@
                     <li>
                         <a href="{% url 'login' %}?next={{ request.path }}">LOGIN</a>
                     </li>
-
+                    <li>
+                        <a href="{% url 'user_create' %}">SIGNUP</a>
+                    </li>
                 {% endif %}
 
                 <li>
