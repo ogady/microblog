@@ -1,10 +1,13 @@
 from django import forms
-from .models import Blog, User
+from .models import Blog
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class BlogForm(forms.ModelForm):
-
-    user = User()
+    """投稿フォーム"""
+    user = User
     content = forms.CharField(label='つぶやき', widget=forms.TextInput(attrs={"size": 60}))
     photo = forms.ImageField(label='画像', required=False)
 
@@ -14,7 +17,7 @@ class BlogForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-
+    """アニメ検索フォーム"""
     choice = (
         ('', '選択肢から選んでください'),
         ('1', '春'),
@@ -29,3 +32,30 @@ class SearchForm(forms.Form):
 
     class Meta:
         fields = ["year", "cours"]
+
+
+class LoginForm(AuthenticationForm):
+    """ログインフォーム"""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+
+
+class UserCreateForm(UserCreationForm):
+    """ユーザー登録用フォーム"""
+
+    class Meta:
+        model = User
+
+        if User.USERNAME_FIELD == 'email':
+            fields = ['email', 'nick_name']
+        else:
+            fields = ['username', 'email']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'

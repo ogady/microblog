@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<p>
+    会員登録が完了しました。<br>
+    <div class="form-group row">
+        <div class="col-sm">
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-info btn-block">LOGIN</a>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm">
+            <a href="{% url 'index' %}" class="btn btn-primary btn-block">HOME</a>
+        </div>
+    </div>
+</p>
+{% endblock %}

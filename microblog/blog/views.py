@@ -1,16 +1,22 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
-from .models import Blog, User
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.views import LoginView, LogoutView
+from .models import Blog
+from django.contrib.auth import get_user_model
+from django.views import generic
 from django.urls import reverse_lazy
-from .forms import BlogForm, SearchForm
+from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
-
+User = get_user_model()
 
 # Create your views here.
+
+
+class Login(LoginView):
+    """ログインページ"""
+    form_class = LoginForm
 
 
 class BlogListView(ListView):
@@ -25,14 +31,13 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
+    # modelのfieldsはformClassに任せる（field属性はマスト）
     model = Blog
-    print("form_class")
     form_class = BlogForm
 
     # LoginRequiredMixinを使う際は定義する必要あり
     login_url = '/login'
 
-    # fieldsはformClassに任せる
     success_url = reverse_lazy("index")
     # templateをクラス汎用ビューのデフォルトから変える
     template_name = "blog/blog_create_form.html"
@@ -158,3 +163,24 @@ def api_call(request):
     context = {'form': form}
     # 最初にブラウザから呼び出されたときに指定テンプレートとコンテキストで描画する
     return render(request, 'blog/anime_search.html', context)
+
+
+class UserCreate(generic.CreateView):
+    """ユーザー登録"""
+    model = User
+    form_class = UserCreateForm
+
+    def form_valid(self, form):
+        """ユーザー登録"""
+        # formをテーブルに保存するかを指定するオプション（デフォルト=True）
+        user = form.save(commit=True)
+        # is_active<-ユーザーアカウントをアクティブにするかどうかを指定,
+        # 退会処理も、is_activeをFalseにするという処理がベター。
+        user.is_active = True
+        user.save()
+
+        return redirect('user_create_done')
+
+
+class UserCreateDone(generic.TemplateView):
+    """ユーザー登録完了"""

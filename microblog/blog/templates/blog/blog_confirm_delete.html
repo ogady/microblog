@@ -1,18 +1,20 @@
 {% extends "base.html" %}
 
 {% block body %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <h1>削除確認</h1>
 
-    <h1>削除確認</h1>
+        <p class="text text-danger">削除してよろしいですか？</p>
 
-    <p class="text text-danger">削除してよろしいですか？</p>
-
-    <form method="post">
-        <table class="table">
-            {% csrf_token %}
-            {{ form }}
-        </table>
-        <button class = "btn btn-danger" type="submit">削除</button>
-        <a href="{% url 'detail' blog.id %}"  class = "btn btn-defult">キャンセル</a>
-    </form>
-
+        <form method="post">
+            <table class="table">
+                {% csrf_token %}
+                {{ form }}
+            </table>
+            <button class="btn btn-danger" type="submit">DELETE</button>
+            <a href="{% url 'detail' blog.id %}" class="btn btn-defult">CANCEL</a>
+        </form>
+    </div>
+</div>
 {% endblock %}
