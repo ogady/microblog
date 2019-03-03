@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Blog
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.views import generic
 from django.urls import reverse_lazy
 from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm
