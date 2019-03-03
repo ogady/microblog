@@ -1,9 +1,32 @@
 {% extends "base.html" %}
 
 {% block body %}
+{% if not user.is_authenticated %}
+<div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<div class="post-preview">
+
+                <h3 class="post-title">
+                    使い方
+                </h3>
+
+                    <p class="post-meta">メニューバーにある”SIGNUP”からユーザー登録してください。<br>
+                    自分用の簡単な独り言ブログが使用できるようになります。<br>
+                    ＜TEST用ユーザー＞<br>
+                        email:test@gmail.com<br>
+                        password:testzaq1zaq1<br>
+                    </p>
+
+
+
+
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% if user.is_authenticated %}
-<p><a href="{% url 'create' %}" class="btn btn-primary">New</a></p>
+<a href="{% url 'create' %}" class="btn btn-primary">New Contents</a>
 {% endif %}
 
 <div class="row">
