@@ -4,20 +4,19 @@
 {% if not user.is_authenticated %}
 <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-<div class="post-preview">
+        <div class="post-preview">
 
-                <h3 class="post-title">
-                    使い方
-                </h3>
+            <h3 class="post-title">
+                使い方
+            </h3>
 
-                    <p class="post-meta">メニューバーにある”SIGNUP”からユーザー登録してください。<br>
-                    自分用の簡単な独り言ブログが使用できるようになります。<br>
-                    ＜TEST用ユーザー＞<br>
-                        email:test@gmail.com<br>
-                        password:testzaq1zaq1<br>
-                    </p>
-
-
+            <p class="post-meta">メニューバーにある”SIGNUP”からユーザー登録してください。<br>
+                自分用の簡単な独り言ブログが使用できるようになります。<br>
+                TEST用のユーザーも用意してるので試してみてください。<br>
+                ＜TEST用ユーザー＞<br>
+                email:test@gmail.com<br>
+                password:testzaq1zaq1<br>
+            </p>
 
 
         </div>
@@ -41,14 +40,14 @@
                 <h3 class="post-title">
                     {{blog.content}}
                 </h3>
-                    {% if blog.photo %}
-                    <p class="post-meta">※画像あり</p>
-                    {% endif %}
+                {% if blog.photo %}
+                <p class="post-meta">※画像あり</p>
+                {% endif %}
             </a>
 
             {# timesinceは”|”で渡されたdateから現在までを計算するDjangoの組み込み関数 #}
             <p class="post-meta">
-            <b>{{blog.user.nick_name}}</b> ｜ {{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}
+                <b>{{blog.user.nick_name}}</b> ｜ {{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}
             </p>
         </div>
         {% endif %}
@@ -67,8 +66,8 @@
         {% endif %}
 
         {% for page in paginator.page_range %}
-        <li {% if page == page_obj.number %} class="active"{% endif %}>
-        <a href="?page={{ page }}">{{ page }}</a>
+        <li {% if page== page_obj.number %} class="active" {% endif %}>
+            <a href="?page={{ page }}">{{ page }}</a>
         </li>
         {% endfor %}
 
