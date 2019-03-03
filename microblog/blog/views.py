@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import render, redirect, resolve_url
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.contrib.auth.views import LoginView
 from .models import Blog
-from django.contrib.auth import get_user_model, login
-from django.views import generic
+from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm
 from django.contrib import messages
@@ -31,6 +30,7 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
+
     # modelのfieldsはformClassに任せる（field属性はマスト）
     model = Blog
     form_class = BlogForm
@@ -62,12 +62,12 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
     # LoginRequiredMixinを使う際は定義する必要あり
     login_url = '/login'
 
-    # fieldsはformClassに任せる
-
     # success_urlを自作する
     def get_success_url(self):
         # <int:pk>はself.kwargsに{"pk": 2（int）}と辞書型にセットされているためpkを取得する
         blog_pk = self.kwargs['pk']
+        user_id = self.kwargs['id']
+
         # 上記同様にreverseする際も{"pk": blog_pk}の辞書型形式でkwargsにセットしてあげる
         url = reverse_lazy("detail", kwargs={"pk": blog_pk})
         return url
@@ -165,7 +165,7 @@ def api_call(request):
     return render(request, 'blog/anime_search.html', context)
 
 
-class UserCreate(generic.CreateView):
+class UserCreate(CreateView):
     """ユーザー登録"""
     model = User
     form_class = UserCreateForm
@@ -182,5 +182,5 @@ class UserCreate(generic.CreateView):
         return redirect('user_create_done')
 
 
-class UserCreateDone(generic.TemplateView):
+class UserCreateDone(TemplateView):
     """ユーザー登録完了"""

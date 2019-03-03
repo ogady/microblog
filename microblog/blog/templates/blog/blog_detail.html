@@ -16,7 +16,7 @@
             <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}</p>
         </div>
 
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.id == object.user.id%}
         <div class="form-group row">
             <div class="col-sm">
                 <a href="{% url 'update' object.id %}" class="btn btn-primary btn-block">EDIT</a>
