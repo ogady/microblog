@@ -12,6 +12,7 @@
         {# {{ }}　値の表示 #}
         {# object_listという変数名はListViewで定義されているので、固定 Viewで指定すれば変更もできる #}
         {% for blog in blog_list %}
+        {% if user.id == blog.user.id %}
         <div class="post-preview">
             <a href="{% url 'detail' blog.id %}">
                 <h3 class="post-title">
@@ -27,6 +28,7 @@
             <b>{{blog.user.nick_name}}</b> ｜ {{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}
             </p>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
 </div>
