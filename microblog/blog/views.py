@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, resolve_url
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.views import LoginView
 from .models import Blog
@@ -8,7 +9,9 @@ from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
+
 User = get_user_model()
+
 
 # Create your views here.
 
@@ -30,7 +33,6 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
-
     # modelのfieldsはformClassに任せる（field属性はマスト）
     model = Blog
     form_class = BlogForm
@@ -66,7 +68,6 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         # <int:pk>はself.kwargsに{"pk": 2（int）}と辞書型にセットされているためpkを取得する
         blog_pk = self.kwargs['pk']
-        user_id = self.kwargs['id']
 
         # 上記同様にreverseする際も{"pk": blog_pk}の辞書型形式でkwargsにセットしてあげる
         url = reverse_lazy("detail", kwargs={"pk": blog_pk})
@@ -105,8 +106,22 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
+def paginate_queryset(request, queryset, count):
+    """Pageオブジェクトを返す。"""
+    paginator = Paginator(queryset, count)
+    page = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+    return page_obj
+
+
 # アニメ検索機能
 def api_call(request):
+    endpoint = 'http://api.moemoe.tokyo/anime/v1/master'
 
     # リクエストがpostであることをチェック
     if request.method == 'POST':
@@ -119,14 +134,13 @@ def api_call(request):
             year = form.cleaned_data['year']
             cours = form.cleaned_data['cours']
 
-            if year & year <= 9999:
+            if year:
                 query = str(year)
-                endpoint = 'http://api.moemoe.tokyo/anime/v1/master'
                 url = endpoint + "/" + query
 
             else:
                 form = SearchForm()
-                messages = ["放送年は4桁の数字で入力してください"]
+                messages = ["放送年を選択してください"]
                 context = {'messages': messages, 'form': form}
 
                 return render(request, 'blog/anime_search.html', context)
@@ -140,13 +154,21 @@ def api_call(request):
 
             form = SearchForm()
 
-            context = {'anime_list': anime_list, 'form' : form}
+            page_obj = paginate_queryset(request, anime_list, 10)
+            context = {
+                'anime_list': page_obj.object_list,
+                'form': form,
+                'year': year,
+                'cours': cours,
+                'page_obj': page_obj,
+            }
 
             return render(request, 'blog/anime_search.html', context)
 
         else:
             form = SearchForm()
-            messages = ["放送年は4桁の数字で入力してください"]
+            messages = ["放送年を選択してください"]
+
             context = {'messages': messages, 'form': form}
 
             return render(request, 'blog/anime_search.html', context)
@@ -156,6 +178,33 @@ def api_call(request):
         """
         # 最初にブラウザから呼び出されるときに使用するフォームクラスを指定
         form = SearchForm()
+
+        # ページネーションバーからGETで遷移したときの処理
+        # ページネーションしてきたときはクエリにyear,coursがあるのでそれを判定して分岐に入る
+        if 'year' in request.GET:
+            year = request.GET.get('year')
+            url = endpoint + "/" + year
+
+            cours = request.GET.get('cours')
+
+            if cours:
+                cours = request.GET.get('cours')
+                url = url + "/" + cours
+
+            response = requests.get(url)
+            anime_list = response.json()
+            page_obj = paginate_queryset(request, anime_list, 10)
+
+            context = {
+                'anime_list': page_obj.object_list,
+                'form': form,
+                'year': year,
+                'cours': cours,
+                'page_obj': page_obj,
+            }
+
+            return render(request, 'blog/anime_search.html', context)
+
     """
     動作順序②
     """
