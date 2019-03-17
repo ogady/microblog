@@ -9,18 +9,23 @@
 
         <form method="post" enctype="multipart/form-data">
             <div class="form-group row">
-                <table class="table">
                     {% csrf_token %}
                     <input type="hidden" name="user" id="id_user" value="{{ user.id }}">
-                    <div class="col-sm-9">
+                    {{ form.anime_id.as_hidden }}
+                    {{ form.anime.as_hidden }}
+                    <div class="form-group, ">
+                        <div class="col-sm">
                         {{ form.content.label }}:
                         {{ form.content|add_class:'form-control' }}
+                        </div>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="form-group">
+                        <div class="col-sm">
                         {{ form.photo.label }}:
-                        {{ form.photo|add_class:'btn btn-default' }}
+                        {{ form.photo|add_class:'form-control, btn btn-default' }}
+                        </div>
+                        <input type="hidden" name="anime" id="anime" value="{{ anime }}">
                     </div>
-                </table>
             </div>
             <hr>
             <div class="form-group row">
