@@ -10,6 +10,8 @@ class BlogForm(forms.ModelForm):
     user = User
     content = forms.CharField(label='つぶやき', widget=forms.Textarea)
     photo = forms.ImageField(label='画像', required=False)
+    anime = forms.CharField(label='アニメタイトル', required=False)
+    anime_id = forms.IntegerField(label='アニメID', required=False)
 
     class Meta:
         model = Blog
@@ -20,7 +22,7 @@ class SearchForm(forms.Form):
     """アニメ検索フォーム"""
 
     years = [('', '選択肢から選ぶ')]
-    years_cnt = 1990
+    years_cnt = 2014
 
     while years_cnt <= 2030:
 

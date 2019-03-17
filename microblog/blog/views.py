@@ -33,10 +33,11 @@ class BlogDetailView(DetailView):
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
-    # modelのfieldsはformClassに任せる（field属性はマスト）
+    # modelのfieldsはformClassに任せる
     model = Blog
-    form_class = BlogForm
 
+    form_class = BlogForm
+    print(BlogForm)
     # LoginRequiredMixinを使う際は定義する必要あり
     login_url = '/login'
 
