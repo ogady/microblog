@@ -40,10 +40,14 @@ urlpatterns = [
     # API呼び出し用viewとのルーティング
     path('search', views.api_call, name='search'),
 
-    # ユーザー登録機能のルーティング
+    # ユーザー登録機能とのルーティング
     path('user_create/', views.UserCreate.as_view(template_name='user_create.html'), name='user_create'),
     path('user_create/done', views.UserCreateDone.as_view(template_name='user_create_done.html'),
          name='user_create_done'),
+
+    # リプライ機能とのルーティング
+    path('comment/<int:post_pk>/', views.comment_create, name='comment_create'),
+    path('reply/<int:comment_pk>/', views.reply_create, name='reply_create'),
 
 ]
 

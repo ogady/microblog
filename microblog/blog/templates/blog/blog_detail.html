@@ -27,12 +27,28 @@
                 <a href="{% url 'delete' object.id %}" class="btn btn-danger btn-block">DELETE</a>
             </div>
         </div>
-            {% endif %}
+        {% endif %}
+        <div class="form-group row">
+            <div class="col-sm">
+                <a href="{% url 'comment_create' object.pk %}" class="btn btn-success btn-block">COMMENT</a>
+            </div>
+        </div>
         <div class="form-group row">
             <div class="col-sm">
                 <a href="{% url 'index' %}" class="btn btn-default btn-block">BACK</a>
             </div>
         </div>
+        <hr>
+        <h2 class="title is-5">コメント一覧</h2>
+        {% for comment in comment_list %}
+        <div class="box">
+            <p>{{ comment.content }}</p>
+            <a href="{% url 'reply_create' comment.pk %}">返信する</a>
+            {% with reply_list=comment.comment_set.all %}
+            {% include 'blog/includes/reply.html' %}
+            {% endwith %}
+        </div>
+        {% endfor %}
     </div>
 </div>
-    {% endblock %}
+{% endblock %}

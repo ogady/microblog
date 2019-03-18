@@ -1,5 +1,5 @@
 from django import forms
-from .models import Blog
+from .models import Blog,  Comment
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -16,6 +16,16 @@ class BlogForm(forms.ModelForm):
     class Meta:
         model = Blog
         fields = ["user", "content", "photo", "anime_id", "anime"]
+
+
+class CommentForm(forms.ModelForm):
+    """コメントフォーム"""
+    comment = Comment
+    content = forms.CharField(label='コメント', widget=forms.Textarea)
+
+    class Meta:
+        model = Comment
+        fields = ["content"]
 
 
 class SearchForm(forms.Form):
