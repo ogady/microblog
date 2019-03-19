@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block body %}
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
         <h1>アニメを探す</h1>
         <form action="{% url 'search' %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -24,8 +22,6 @@
                 </div>
             </div>
         </form>
-    </div>
-</div>
 <br>
 {% if anime_list %}
 {% for anime in anime_list %}

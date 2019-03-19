@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -22,103 +23,106 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    {% include "navi.html" %}
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url({% static 'img/home-bg.jpg' %})">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="site-heading">
-                        <h1>Anicolle Blog</h1>
-                        <hr class="small">
-                        <span class="subheading" >アニメに関するつぶやきができます。</span>
-                        <span class="subheading" >SignUpして利用してください。</span>
-                    </div>
+<!-- Navigation -->
+{% include "navi.html" %}
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="intro-header" style="background-image: url({% static 'img/home-bg.jpg' %})">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading">
+                    <h1>Anicolle Blog</h1>
+                    <hr class="small">
+                    <span class="subheading">アニメに関するつぶやきができます。</span>
+                    <span class="subheading">SignUpして利用してください。</span>
                 </div>
             </div>
         </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="container">
-
-        {% if messages %}
-            <ul class="list-unstyled">
-            {% for message in messages %}
-                <li {% if message.tags %}
-                    class = "bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert" {% endif %}>
-                    {{message}}
-                    <button type="button" class="close" aria-label="Close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-
-        {% block body %}
-
-        {% endblock %}
-
     </div>
+</header>
 
-    <hr>
+<!-- Main Content -->
+<div class="container">
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <ul class="list-inline text-center">
-                        <li>
-                            <a href="#">
+    {% if messages %}
+    <ul class="list-unstyled">
+        {% for message in messages %}
+        <li {% if message.tags %}
+            class="bg-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert" {% endif %}>
+            {{message}}
+            <button type="button" class="close" aria-label="Close" data-dismiss="alert">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1
+        col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            {% block body %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    <li>
+                        <a href="#">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
                                 </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
                                 </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
                                 </span>
-                            </a>
-                        </li>
-                    </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
-                </div>
+                        </a>
+                    </li>
+                </ul>
+                <p class="copyright text-muted">Copyright &copy; Your Website 2019</p>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <!-- jQuery -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<!-- jQuery -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 
-    <!-- Theme JavaScript -->
-    <script src="{% static 'js/clean-blog.min.js' %}"></script>
+<!-- Theme JavaScript -->
+<script src="{% static 'js/clean-blog.min.js' %}"></script>
 
 </body>
 

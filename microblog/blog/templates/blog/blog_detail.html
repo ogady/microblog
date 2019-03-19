@@ -1,54 +1,48 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
-        {# {% %}　プログラム的な命令 #}
-        {# {{ }}　値の表示 #}
-        {# object==データが入っている変数、デフォルト値 #}
-        <div class="post-preview">
-            <h2 class="post-title">
-                {{object.content}}
-            </h2>
-            {% if object.photo %}
-            <img src="{{ object.photo.url }}" class="img-responsive">
-            {% endif %}
-            <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}</p>
-        </div>
+
+{# {% %}　プログラム的な命令 #}
+{# {{ }}　値の表示 #}
+{# object==データが入っている変数、デフォルト値 #}
+<div class="post-preview">
+    <h3 class="post-title">
+        {{object.content}}
+    </h3>
+    {% if object.photo %}
+    <img src="{{ object.photo.url }}" class="img-responsive">
+    {% endif %}
+    <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}
 
         {% if user.is_authenticated and user.id == object.user.id%}
-        <div class="form-group row">
-            <div class="col-sm">
-                <a href="{% url 'update' object.id %}" class="btn btn-primary btn-block">EDIT</a>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm">
-                <a href="{% url 'delete' object.id %}" class="btn btn-danger btn-block">DELETE</a>
-            </div>
-        </div>
+        <a href="{% url 'delete' object.id %}" class="btn pull-right">削除</a>
+        <a href="{% url 'update' object.id %}" class="btn pull-right">編集</a>
         {% endif %}
-        <div class="form-group row">
-            <div class="col-sm">
-                <a href="{% url 'comment_create' object.pk %}" class="btn btn-success btn-block">COMMENT</a>
-            </div>
+    </p>
+    <div class="form-group row">
+        <div class="col-sm">
+            <a href="{% url 'comment_create' object.pk %}" class="btn btn-info btn-block">コメントする</a>
         </div>
-        <div class="form-group row">
-            <div class="col-sm">
-                <a href="{% url 'index' %}" class="btn btn-default btn-block">BACK</a>
-            </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm">
+            <a href="{% url 'index' %}" class="btn btn-default btn-block">戻る</a>
         </div>
-        <hr>
-        <h2 class="title is-5">コメント一覧</h2>
-        {% for comment in comment_list %}
-        <div class="box">
+    </div>
+    <hr>
+    <h4 class="title is-5">コメント一覧</h4>
+    {% for comment in comment_list %}
+    <div class="post-preview">
+        <div class="post-meta">
+
             <p>{{ comment.content }}</p>
-            <a href="{% url 'reply_create' comment.pk %}">返信する</a>
+            <a href="{% url 'reply_create' comment.pk %}" class="btn">返信する</a>
             {% with reply_list=comment.comment_set.all %}
             {% include 'blog/includes/reply.html' %}
             {% endwith %}
         </div>
-        {% endfor %}
+
     </div>
 </div>
+{% endfor %}
 {% endblock %}
