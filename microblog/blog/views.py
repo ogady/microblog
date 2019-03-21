@@ -36,6 +36,7 @@ class BlogDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         # 記事へのコメントを取得
         context['comment_list'] = self.object.comment_set.filter(parent__isnull=True)
+        context['like_cnt'] = Like.objects.filter(post=kwargs['object']).count()
         return context
 
 
@@ -44,7 +45,6 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     model = Blog
 
     form_class = BlogForm
-    print(BlogForm)
     # LoginRequiredMixinを使う際は定義する必要あり
     login_url = '/login'
 
@@ -243,9 +243,9 @@ class UserCreateDone(TemplateView):
     """ユーザー登録完了"""
 
 
-def comment_create(request, post_pk):
+def comment_create(request, blog_pk):
     """記事へのコメント作成"""
-    post = get_object_or_404(Blog, pk=post_pk)
+    post = get_object_or_404(Blog, pk=blog_pk)
     form = CommentForm(request.POST or None)
 
     if request.method == 'POST':
@@ -282,27 +282,33 @@ def reply_create(request, comment_pk):
     return render(request, 'blog/comment_form.html', context)
 
 
-class Like(LoginRequiredMixin, View):
+class LikeAddOrDelete(LoginRequiredMixin, View):
     """いいねをするorいいねを解除する"""
 
-# @login_required
-# def like(request, **kwargs):
-#     blog = Blog.objects.get(id=kwargs['post_id'])
-#     is_like = Like.objects.filter(user=request.user).filter(post=blog).count()
-#     # unlike
-#     if is_like > 0:
-#         liking = Like.objects.get(post__id=kwargs['post_id'], user=request.user)
-#         liking.delete()
-#         blog.like_num -= 1
-#         blog.save()
-#         messages.warning(request, 'いいねを取り消しました')
-#         return redirect(reverse_lazy('posts:post_detail', kwargs={'post_id': kwargs['post_id']}))
-#     # like
-#     blog.like_num += 1
-#     blog.save()
-#     like = Like()
-#     like.user = request.user
-#     like.post = blog
-#     like.save()
-#     messages.success(request, 'いいね！しました')
-#     return redirect(reverse_lazy('posts:post_detail', kwargs={'post_id': kwargs['post_id']}))
+    # LoginRequiredMixinを使う際は定義する必要あり
+    login_url = '/login'
+
+    def get(self, request, **kwargs):
+        blog = Blog.objects.get(id=kwargs['blog_pk'])
+        is_like = Like.objects.filter(user=request.user).filter(post=blog).count()
+
+        # いいねを解除する
+        if is_like > 0:
+           liking = Like.objects.get(post__id=kwargs['blog_pk'], user=request.user)
+           liking.delete()
+           blog.like_num -= 1
+           blog.save()
+           messages.warning(request, 'いいねを取り消しました')
+
+           return redirect(reverse_lazy('detail', kwargs={'pk': kwargs['blog_pk']}))
+
+        # いいねする
+        blog.like_num += 1
+        blog.save()
+        like = Like()
+        like.user = request.user
+        like.post = blog
+        like.save()
+        messages.success(request, 'いいね！しました')
+
+        return redirect(reverse_lazy('detail', kwargs={'pk': kwargs['blog_pk']}))
