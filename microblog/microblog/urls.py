@@ -46,9 +46,11 @@ urlpatterns = [
          name='user_create_done'),
 
     # リプライ機能とのルーティング
-    path('comment/<int:post_pk>/', views.comment_create, name='comment_create'),
+    path('comment/<int:blog_pk>/', views.comment_create, name='comment_create'),
     path('reply/<int:comment_pk>/', views.reply_create, name='reply_create'),
 
+    # いいね機能とのルーティング
+    path('like/<int:blog_pk>/', views.LikeAddOrDelete.as_view(), name="like"),
 ]
 
 # 画像UL用

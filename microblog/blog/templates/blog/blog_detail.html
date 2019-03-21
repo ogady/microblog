@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block body %}
 
 {# {% %}　プログラム的な命令 #}
@@ -13,10 +13,10 @@
     <img src="{{ object.photo.url }}" class="img-responsive">
     {% endif %}
     <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}
-
+        <a href="{% url 'like' object.id %}" class="btn-gradient-radius">{{ like_cnt }} いいね！</a>
         {% if user.is_authenticated and user.id == object.user.id%}
-        <a href="{% url 'delete' object.id %}" class="btn btn-xs pull-right">削除</a>
-        <a href="{% url 'update' object.id %}" class="btn btn-xs pull-right">編集</a>
+        <a href="{% url 'delete' object.id %}" class="pull-right">削除</a>
+        <a href="{% url 'update' object.id %}" class="pull-right">編集 | </a>
         {% endif %}
     </p>
     <div class="form-group row">

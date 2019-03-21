@@ -18,9 +18,13 @@ class Blog(models.Model):
     anime = models.CharField(max_length=200, blank=True, null=True)
     posted_date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    like_num = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-posted_date']
+
+    def __str__(self):
+        return self.content
 
 
 class Comment(models.Model):
@@ -29,12 +33,17 @@ class Comment(models.Model):
     # selfはForrignKey(Comment)を意味する。
     parent = models.ForeignKey('self', verbose_name='親コメント', null=True, blank=True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.content
+
 
 class Like(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_user')
     post = models.ForeignKey(Blog, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.user
 
 class UserManager(BaseUserManager):
     """ユーザーマネージャー."""
