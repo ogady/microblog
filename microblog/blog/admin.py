@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import  Blog
+from blog.models import Blog, Comment
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.admin import UserAdmin
 from .models import User
@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy
 # Register your models here.
 
 admin.site.register(Blog)
+admin.site.register(Comment)
 
 
 # adminサイトでemailを使う

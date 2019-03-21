@@ -12,7 +12,7 @@ from django.contrib.auth.base_user import BaseUserManager
 
 
 class Blog(models.Model):
-    content = models.CharField(max_length=140)
+    content = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='anicolleblog', blank=True, null=True)
     anime_id = models.IntegerField(blank=True, null=True)
     anime = models.CharField(max_length=200, blank=True, null=True)
@@ -21,6 +21,19 @@ class Blog(models.Model):
 
     class Meta:
         ordering = ['-posted_date']
+
+
+class Comment(models.Model):
+    content = models.TextField('コメント')
+    post = models.ForeignKey(Blog, verbose_name='対象記事', on_delete=models.CASCADE)
+    # selfはForrignKey(Comment)を意味する。
+    parent = models.ForeignKey('self', verbose_name='親コメント', null=True, blank=True, on_delete=models.CASCADE)
+
+
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_user')
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
 
 
 class UserManager(BaseUserManager):

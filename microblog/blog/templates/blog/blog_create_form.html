@@ -1,46 +1,34 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block body %}
-
-<div class="row">
-    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
         <h1>新規作成</h1>
-
-
         <form method="post" enctype="multipart/form-data">
             <div class="form-group row">
                     {% csrf_token %}
                     <input type="hidden" name="user" id="id_user" value="{{ user.id }}">
                     {{ form.anime_id.as_hidden }}
                     {{ form.anime.as_hidden }}
-                    <div class="form-group, ">
-                        <div class="col-sm">
+                    <div class="form-group">
                         {{ form.content.label }}:
                         {{ form.content|add_class:'form-control' }}
-                        </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm">
                         {{ form.photo.label }}:
                         {{ form.photo|add_class:'form-control, btn btn-default' }}
-                        </div>
                         <input type="hidden" name="anime" id="anime" value="{{ anime }}">
                     </div>
             </div>
             <hr>
             <div class="form-group row">
                 <div class="col-sm">
-                    <button type="submit" class="btn btn-info btn-block">SAVE</button>
+                    <button type="submit" class="btn btn-info btn-block">保存する</button>
                 </div>
 
             </div>
             <div class="form-group row">
                 <div class="col-sm">
-                    <a href="{% url 'index' %}" class="btn btn-default btn-block">BACK</a>
+                    <a href="{% url 'index' %}" class="btn btn-default btn-block">戻る</a>
                 </div>
             </div>
         </form>
-    </div>
-</div>
-
 {% endblock %}

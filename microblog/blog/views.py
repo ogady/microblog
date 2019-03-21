@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, View
+from django.contrib import messages
 from django.contrib.auth.views import LoginView
-from .models import Blog
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
-from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm
-from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Blog, Comment, Like
+from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, CommentForm
 import requests
 
 User = get_user_model()
@@ -30,6 +30,13 @@ class BlogListView(ListView):
 
 class BlogDetailView(DetailView):
     model = Blog
+
+    def get_context_data(self, **kwargs):
+        # 継承元のメソッドを呼び出す
+        context = super().get_context_data(**kwargs)
+        # 記事へのコメントを取得
+        context['comment_list'] = self.object.comment_set.filter(parent__isnull=True)
+        return context
 
 
 class BlogCreateView(LoginRequiredMixin, CreateView):
@@ -234,3 +241,68 @@ class UserCreate(CreateView):
 
 class UserCreateDone(TemplateView):
     """ユーザー登録完了"""
+
+
+def comment_create(request, post_pk):
+    """記事へのコメント作成"""
+    post = get_object_or_404(Blog, pk=post_pk)
+    form = CommentForm(request.POST or None)
+
+    if request.method == 'POST':
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+        return redirect('detail', pk=post.pk)
+
+    context = {
+        'form': form,
+        'post': post
+    }
+    return render(request, 'blog/comment_form.html', context)
+
+
+def reply_create(request, comment_pk):
+    """コメントへの返信"""
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    post = comment.post
+    form = CommentForm(request.POST or None)
+
+    if request.method == 'POST':
+        reply = form.save(commit=False)
+        reply.parent = comment
+        reply.post = post
+        reply.save()
+        return redirect('detail', pk=post.pk)
+
+    context = {
+        'form': form,
+        'post': post,
+        'comment': comment,
+    }
+    return render(request, 'blog/comment_form.html', context)
+
+
+class Like(LoginRequiredMixin, View):
+    """いいねをするorいいねを解除する"""
+
+# @login_required
+# def like(request, **kwargs):
+#     blog = Blog.objects.get(id=kwargs['post_id'])
+#     is_like = Like.objects.filter(user=request.user).filter(post=blog).count()
+#     # unlike
+#     if is_like > 0:
+#         liking = Like.objects.get(post__id=kwargs['post_id'], user=request.user)
+#         liking.delete()
+#         blog.like_num -= 1
+#         blog.save()
+#         messages.warning(request, 'いいねを取り消しました')
+#         return redirect(reverse_lazy('posts:post_detail', kwargs={'post_id': kwargs['post_id']}))
+#     # like
+#     blog.like_num += 1
+#     blog.save()
+#     like = Like()
+#     like.user = request.user
+#     like.post = blog
+#     like.save()
+#     messages.success(request, 'いいね！しました')
+#     return redirect(reverse_lazy('posts:post_detail', kwargs={'post_id': kwargs['post_id']}))
