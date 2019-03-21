@@ -1,73 +1,70 @@
 {% extends "base.html" %}
 {% load widget_tweaks %}
 {% block body %}
-        <h1>アニメを探す</h1>
-        <form action="{% url 'search' %}" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            <table class="table">
-                <div class="form-group row">
-                    <div class="col-sm-3">
-                        {{ form.year.label }}
-                        {{ form.year|add_class:'form-control' }}
-                    </div>
-                    <div class="col-sm-3">
-                        {{ form.cours.label }}
-                        {{ form.cours|add_class:'form-control' }}
-                    </div>
-                </div>
-            </table>
-            <div class="form-group row">
-                <div class="col-sm">
-                    <button type="submit" class="btn btn-primary btn-block" name='action' value="search">SEARCH</button>
-                </div>
+<h1>アニメを探す</h1>
+<form action="{% url 'search' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <table class="table">
+        <div class="form-group row">
+            <div class="col-sm-3">
+                {{ form.year.label }}
+                {{ form.year|add_class:'form-control' }}
             </div>
-        </form>
+            <div class="col-sm-3">
+                {{ form.cours.label }}
+                {{ form.cours|add_class:'form-control' }}
+            </div>
+        </div>
+    </table>
+    <div class="form-group row">
+        <div class="col-sm">
+            <button type="submit" class="btn btn-primary btn-block" name='action' value="search">SEARCH</button>
+        </div>
+    </div>
+</form>
 <br>
 {% if anime_list %}
 {% for anime in anime_list %}
-<div class="form-group row">
-    <div class="col-lg-8 col-lg-offset-1 col-md-10 col-md-offset-1">
-        <a href="{% url 'create' %}?anime={{ anime.title }}&anime_id={{ anime.id }}" class="btn btn-default btn-block">
-            {{ anime.id }}/{{ anime.title }}
-        </a>
-    </div>
-</div>
+
+<a href="{% url 'create' %}?anime={{ anime.title }}&anime_id={{ anime.id }}" class="btn btn-default btn-block">
+    {{ anime.id }}/{{ anime.title }}
+</a>
 
 {% endfor%}
 {% if anime_list %}
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <!-- 前へ の部分 -->
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link"
-                   href="?page={{ page_obj.previous_page_number }}&year={{ year }}&cours={{ cours }}">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            {% endif %}
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <!-- 前へ の部分 -->
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?page={{ page_obj.previous_page_number }}&year={{ year }}&cours={{ cours }}">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
 
-            <!-- 数字の部分 -->
-            {% for num in page_obj.paginator.page_range %}
-            {% if page_obj.number == num %}
-            <li class="page-item active"><a class="page-link" href="#!">{{ num }}</a></li>
-            {% else %}
-            <li class="page-item"><a class="page-link"
-                                     href="?page={{ num }}&year={{ year }}&cours={{ cours }}">{{ num }}</a></li>
-            {% endif %}
-            {% endfor %}
+        <!-- 数字の部分 -->
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active"><a class="page-link" href="#!">{{ num }}</a></li>
+        {% else %}
+        <li class="page-item"><a class="page-link"
+                                 href="?page={{ num }}&year={{ year }}&cours={{ cours }}">{{ num }}</a></li>
+        {% endif %}
+        {% endfor %}
 
-            <!-- 次へ の部分 -->
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link"
-                   href="?page={{ page_obj.next_page_number }}&year={{ year }}&cours={{ cours }}">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
+        <!-- 次へ の部分 -->
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link"
+               href="?page={{ page_obj.next_page_number }}&year={{ year }}&cours={{ cours }}">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
 {% endif %}
 
 {% endif %}

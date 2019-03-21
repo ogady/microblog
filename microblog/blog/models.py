@@ -29,8 +29,11 @@ class Comment(models.Model):
     # selfはForrignKey(Comment)を意味する。
     parent = models.ForeignKey('self', verbose_name='親コメント', null=True, blank=True, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return self.text[:10]
+
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_user')
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
 
 
 class UserManager(BaseUserManager):

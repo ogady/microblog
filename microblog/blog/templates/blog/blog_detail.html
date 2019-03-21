@@ -15,8 +15,8 @@
     <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}
 
         {% if user.is_authenticated and user.id == object.user.id%}
-        <a href="{% url 'delete' object.id %}" class="btn pull-right">削除</a>
-        <a href="{% url 'update' object.id %}" class="btn pull-right">編集</a>
+        <a href="{% url 'delete' object.id %}" class="btn btn-xs pull-right">削除</a>
+        <a href="{% url 'update' object.id %}" class="btn btn-xs pull-right">編集</a>
         {% endif %}
     </p>
     <div class="form-group row">
@@ -35,7 +35,8 @@
     <div class="post-preview">
         <div class="post-meta">
 
-            <p>{{ comment.content }}</p>
+            {{ comment.content }}
+            <br>
             <a href="{% url 'reply_create' comment.pk %}" class="btn">返信する</a>
             {% with reply_list=comment.comment_set.all %}
             {% include 'blog/includes/reply.html' %}
