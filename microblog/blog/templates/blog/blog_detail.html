@@ -2,6 +2,23 @@
 {% load static %}
 {% block body %}
 
+<head>
+    <script>
+        function api_like() {
+            var api_url = "{% url 'api_like' object.pk %}";
+            var btn = document.getElementById("like");
+            var request = new XMLHttpRequest();
+            request.onreadystatechange = function () {
+                if (request.readyState === 4 && request.status === 200) {
+                    var received_data = JSON.parse(request.responseText);
+                    btn.innerText = received_data.like;
+                }
+            }
+            request.open("GET",api_url);
+            request.send();
+        }
+    </script>
+</head>
 {# {% %}　プログラム的な命令 #}
 {# {{ }}　値の表示 #}
 {# object==データが入っている変数、デフォルト値 #}
@@ -10,15 +27,18 @@
         {{object.content}}
     </h3>
     {% if object.photo %}
-    <img src="{{ object.photo.url }}" class="img-responsive">
+    <img src="{{ object.photo.url }}" class="img-responsive"><br>
     {% endif %}
     <p class="post-meta">{{object.posted_date|date:"Y/m/d h:m:s"}}
-        <a href="{% url 'like' object.id %}" class="btn-gradient-radius">{{ like_cnt }} いいね！</a>
+        <a onclick="api_like()" class="btn-gradient-radius"><span id="like">{{ like_cnt }} </span>いいね！</a>
         {% if user.is_authenticated and user.id == object.user.id%}
         <a href="{% url 'delete' object.id %}" class="pull-right">削除</a>
         <a href="{% url 'update' object.id %}" class="pull-right">編集 | </a>
         {% endif %}
     </p>
+    {% if not user.is_authenticated %}
+    <p class="post-meta">※いいね機能を使うにはログインしてください</p>
+    {% endif %}
     <div class="form-group row">
         <div class="col-sm">
             <a href="{% url 'comment_create' object.pk %}" class="btn btn-info btn-block">コメントする</a>

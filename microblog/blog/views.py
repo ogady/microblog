@@ -6,6 +6,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
+from django.http.response import JsonResponse
 from .models import Blog, Comment, Like
 from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, CommentForm
 import requests
@@ -312,3 +313,30 @@ class LikeAddOrDelete(LoginRequiredMixin, View):
         messages.success(request, 'いいね！しました')
 
         return redirect(reverse_lazy('detail', kwargs={'pk': kwargs['blog_pk']}))
+
+
+class LikeAddOrDeleteApi(LoginRequiredMixin, View):
+    """いいねをするorいいねを解除するAPI"""
+
+    def get(self, request, **kwargs):
+        blog = Blog.objects.get(id=kwargs['blog_pk'])
+        is_like = Like.objects.filter(user=request.user).filter(post=blog).count()
+
+        # いいねを解除する
+        if is_like > 0:
+           liking = Like.objects.get(post__id=kwargs['blog_pk'], user=request.user)
+           liking.delete()
+           blog.like_num -= 1
+           blog.save()
+
+           return JsonResponse({"like": blog.like_num})
+
+        # いいねする
+        blog.like_num += 1
+        blog.save()
+        like = Like()
+        like.user = request.user
+        like.post = blog
+        like.save()
+
+        return JsonResponse({"like": blog.like_num})

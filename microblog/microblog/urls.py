@@ -51,6 +51,8 @@ urlpatterns = [
 
     # いいね機能とのルーティング
     path('like/<int:blog_pk>/', views.LikeAddOrDelete.as_view(), name="like"),
+    # いいね機能APIとのルーティング
+    path("api/like/<int:blog_pk>/", views.LikeAddOrDeleteApi.as_view(), name="api_like"),
 ]
 
 # 画像UL用

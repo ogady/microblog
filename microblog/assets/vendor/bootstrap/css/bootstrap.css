@@ -3213,7 +3213,7 @@ fieldset[disabled] .btn-primary.focus {
 }
 .btn-gradient-radius {
   display: inline-block;
-  padding: 7px 20px;
+  padding: 0.5px 10px;
   border-radius: 25px;
   text-decoration: none;
   color: #00BCD4;
