@@ -49,8 +49,6 @@ urlpatterns = [
     path('comment/<int:blog_pk>/', views.comment_create, name='comment_create'),
     path('reply/<int:comment_pk>/', views.reply_create, name='reply_create'),
 
-    # いいね機能とのルーティング
-    path('like/<int:blog_pk>/', views.LikeAddOrDelete.as_view(), name="like"),
     # いいね機能APIとのルーティング
     path("api/like/<int:blog_pk>/", views.LikeAddOrDeleteApi.as_view(), name="api_like"),
 ]
