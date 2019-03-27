@@ -27,7 +27,7 @@
 {% for anime in anime_list %}
 
 <a href="{% url 'create' %}?anime={{ anime.title }}&anime_id={{ anime.id }}" class="btn btn-default btn-block">
-    {{ anime.id }}/{{ anime.title }}
+    {{ anime.title }}
 </a>
 
 {% endfor%}

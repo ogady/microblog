@@ -44,7 +44,6 @@ class BlogDetailView(DetailView):
 class BlogCreateView(LoginRequiredMixin, CreateView):
     # modelのfieldsはformClassに任せる
     model = Blog
-
     form_class = BlogForm
     # LoginRequiredMixinを使う際は定義する必要あり
     login_url = '/login'
@@ -52,6 +51,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("index")
     # templateをクラス汎用ビューのデフォルトから変える
     template_name = "blog/blog_create_form.html"
+
 
     # バリデート後
     def form_valid(self, form):
@@ -114,7 +114,7 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         # super()で継承元の処理を返すのがお約束
         return super().delete(request, *args, **kwargs)
 
-
+# ページネーション機能
 def paginate_queryset(request, queryset, count):
     """Pageオブジェクトを返す。"""
     paginator = Paginator(queryset, count)
@@ -128,7 +128,7 @@ def paginate_queryset(request, queryset, count):
     return page_obj
 
 
-# アニメ検索機能
+# アニメ検索機能（関数ビューの知見）
 def api_call(request):
     endpoint = 'http://api.moemoe.tokyo/anime/v1/master'
 
@@ -182,9 +182,7 @@ def api_call(request):
 
             return render(request, 'blog/anime_search.html', context)
     else:
-        """
-        動作順序①
-        """
+
         # 最初にブラウザから呼び出されるときに使用するフォームクラスを指定
         form = SearchForm()
 
@@ -214,9 +212,6 @@ def api_call(request):
 
             return render(request, 'blog/anime_search.html', context)
 
-    """
-    動作順序②
-    """
     # 作成されたフォームオブジェクトをコンテキストへ格納
     context = {'form': form}
     # 最初にブラウザから呼び出されたときに指定テンプレートとコンテキストで描画する
@@ -281,38 +276,6 @@ def reply_create(request, comment_pk):
         'comment': comment,
     }
     return render(request, 'blog/comment_form.html', context)
-
-
-class LikeAddOrDelete(LoginRequiredMixin, View):
-    """いいねをするorいいねを解除する"""
-
-    # LoginRequiredMixinを使う際は定義する必要あり
-    login_url = '/login'
-
-    def get(self, request, **kwargs):
-        blog = Blog.objects.get(id=kwargs['blog_pk'])
-        is_like = Like.objects.filter(user=request.user).filter(post=blog).count()
-
-        # いいねを解除する
-        if is_like > 0:
-           liking = Like.objects.get(post__id=kwargs['blog_pk'], user=request.user)
-           liking.delete()
-           blog.like_num -= 1
-           blog.save()
-           messages.warning(request, 'いいねを取り消しました')
-
-           return redirect(reverse_lazy('detail', kwargs={'pk': kwargs['blog_pk']}))
-
-        # いいねする
-        blog.like_num += 1
-        blog.save()
-        like = Like()
-        like.user = request.user
-        like.post = blog
-        like.save()
-        messages.success(request, 'いいね！しました')
-
-        return redirect(reverse_lazy('detail', kwargs={'pk': kwargs['blog_pk']}))
 
 
 class LikeAddOrDeleteApi(LoginRequiredMixin, View):
