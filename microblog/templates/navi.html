@@ -20,7 +20,7 @@
 
                     {# ログインしているとき #}
                     <li>
-                        <a href="#">あなた：{{ user.nick_name }}</a>
+                        <a href="{% url 'profile_detail' user.nick_name %}">あなた：{{ user.nick_name }}</a>
                     </li>
 
                     <li>

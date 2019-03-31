@@ -7,8 +7,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.http.response import JsonResponse
-from .models import Blog, Comment, Like
-from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, CommentForm
+from .models import Blog, Comment, Like, UserProfile
+from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, CommentForm, ProfileForm
 import requests
 
 User = get_user_model()
@@ -237,6 +237,52 @@ class UserCreate(CreateView):
 
 class UserCreateDone(TemplateView):
     """ユーザー登録完了"""
+
+
+class ProfileDetailView(DetailView):
+    model = UserProfile
+    slug_field = "nick_name"  # モデルのフィールドの名前
+    slug_url_kwarg = "nick_name"  # urls.pyでのキーワードの名前
+
+    # def get_queryset(self):
+    #     user_profile = UserProfile.objects.select_related('user').filter(user_id=self.request.user.id)
+    #     print(user_profile.query)
+    #     print(user_profile.value())
+    #     print(UserProfile.objects.filter(user_id=self.kwargs['pk']))
+    #     return user_profile
+
+    def get_object(self, queryset=None):
+        user_id = User.objects.get(nick_name=self.kwargs['nick_name'])
+        return UserProfile.objects.get(user_id=user_id)
+
+    def get_context_data(self, **kwargs):
+        # 継承元のメソッドを呼び出す
+        user_id = User.objects.get(nick_name=self.kwargs['nick_name'])
+        context = super().get_context_data(**kwargs)
+        context['blog_list'] = Blog.objects.filter(user=user_id)
+        return context
+
+
+class EditProfile(LoginRequiredMixin, UpdateView):
+    """プロフィール編集"""
+    model = UserProfile
+    form_class = ProfileForm
+    # LoginRequiredMixinを使う際は定義する必要あり
+    login_url = '/login'
+    # templateをクラス汎用ビューのデフォルトから変える
+    template_name = "blog/profile_edit_form.html"
+
+    # バリデート後
+    def form_valid(self, form):
+        # self.requestオブジェクトに”更新しました。”を込める
+        messages.success(self.request, "更新しました。")
+        # super()で継承元の処理を返すのがお約束
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # self.requestオブジェクトに”更新に失敗しました。”を込める
+        messages.error(self.request, "更新に失敗しました。")
+        return super().form_invalid(form)
 
 
 def comment_create(request, blog_pk):

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Blog,  Comment
+from .models import Blog,  Comment, UserProfile
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -78,6 +78,17 @@ class UserCreateForm(UserCreationForm):
             fields = ['email', 'nick_name']
         else:
             fields = ['username', 'email']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields=['picture', 'bio']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from blog.models import Blog, Comment
+from blog.models import Blog, Comment, UserProfile
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.admin import UserAdmin
 from .models import User
@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy
 
 admin.site.register(Blog)
 admin.site.register(Comment)
-
+admin.site.register(UserProfile)
 
 # adminサイトでemailを使う
 class MyUserChangeForm(UserChangeForm):

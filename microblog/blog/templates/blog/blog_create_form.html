@@ -6,8 +6,6 @@
             <div class="form-group row">
                     {% csrf_token %}
                     <input type="hidden" name="user" id="id_user" value="{{ user.id }}">
-                    {{ form.anime_id.as_hidden }}
-                    {{ form.anime.as_hidden }}
                     <div class="form-group">
                         {{ form.content.label }}:
                         {{ form.content|add_class:'form-control' }}
@@ -15,7 +13,6 @@
                     <div class="form-group">
                         {{ form.photo.label }}:
                         {{ form.photo|add_class:'form-control, btn btn-default' }}
-                        <input type="hidden" name="anime" id="anime" value="{{ request.get_query}}">
                     </div>
             </div>
             <hr>

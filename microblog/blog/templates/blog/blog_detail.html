@@ -17,6 +17,7 @@
             request.open("GET",api_url);
             request.send();
         }
+
     </script>
 </head>
 {# {% %}　プログラム的な命令 #}
@@ -56,14 +57,18 @@
         <div class="post-meta">
 
             {{ comment.content }}
-            <br>
-            <a href="{% url 'reply_create' comment.pk %}" class="btn">返信する</a>
-            {% with reply_list=comment.comment_set.all %}
-            {% include 'blog/includes/reply.html' %}
-            {% endwith %}
+            <div class="pull-right ">
+                <small>{{ comment.commented_date }}</small>
+            </div>
         </div>
-
+        <br>
+        <a href="{% url 'reply_create' comment.pk %}" class="btn">返信する</a>
+        {% with reply_list=comment.comment_set.all %}
+        {% include 'blog/includes/reply.html' %}
+        {% endwith %}
     </div>
+
+</div>
 </div>
 {% endfor %}
 {% endblock %}

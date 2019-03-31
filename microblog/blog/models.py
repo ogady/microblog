@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.models import PermissionsMixin
@@ -6,6 +7,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
+from django.dispatch import receiver
 
 
 # Create your models here.
@@ -32,18 +34,31 @@ class Comment(models.Model):
     post = models.ForeignKey(Blog, verbose_name='対象記事', on_delete=models.CASCADE)
     # selfはForrignKey(Comment)を意味する。
     parent = models.ForeignKey('self', verbose_name='親コメント', null=True, blank=True, on_delete=models.CASCADE)
+    commented_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.content
 
 
 class Like(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='like_user')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                             related_name='like_user')
     post = models.ForeignKey(Blog, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
+                                related_name='profile')
+    picture = models.ImageField(upload_to='profile_pictures', blank=True, null=True)
+    bio = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.user.username
+
 
 class UserManager(BaseUserManager):
     """ユーザーマネージャー."""
@@ -84,7 +99,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """カスタムユーザーモデル."""
 
     email = models.EmailField(_('email address'), unique=True)
-    nick_name = models.CharField(_('nick name'), max_length=50, blank=False, db_column="ユーザー名")
+    nick_name = models.CharField(_('nick name'), max_length=50, blank=False, unique=True, db_column="ユーザー名")
 
     is_staff = models.BooleanField(
         _('staff status'),
@@ -113,11 +128,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _('users')
 
     def get_short_name(self):
-        """Return the short name for the user."""
         return self.nick_name
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
+        """ユーザーにメールを送る"""
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
     @property
@@ -128,3 +142,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         メールアドレスを返す
         """
         return self.email
+
+@receiver(post_save, sender=User)
+def create_profile(sender, **kwargs):
+    """ 新ユーザー作成時に空のprofileも作成する """
+    if kwargs['created']:
+        user_profile = UserProfile.objects.get_or_create(user=kwargs['instance'])

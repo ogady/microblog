@@ -51,6 +51,10 @@ urlpatterns = [
 
     # いいね機能APIとのルーティング
     path("api/like/<int:blog_pk>/", views.LikeAddOrDeleteApi.as_view(), name="api_like"),
+
+    # プロフィールとのルーティング
+    path("<str:nick_name>/profile/", views.ProfileDetailView.as_view(template_name="blog/profile_detail.html")
+         , name="profile_detail"),
 ]
 
 # 画像UL用
