@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from .models import Blog, Comment, Like, UserProfile
-from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, CommentForm, ProfileForm
+from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, CommentForm,  UserUpdateForm, ProfileFormSet
 import requests
 
 User = get_user_model()
@@ -51,7 +51,6 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("index")
     # templateをクラス汎用ビューのデフォルトから変える
     template_name = "blog/blog_create_form.html"
-
 
     # バリデート後
     def form_valid(self, form):
@@ -113,6 +112,7 @@ class BlogDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(self.request, "削除しました。")
         # super()で継承元の処理を返すのがお約束
         return super().delete(request, *args, **kwargs)
+
 
 # ページネーション機能
 def paginate_queryset(request, queryset, count):
@@ -263,21 +263,47 @@ class ProfileDetailView(DetailView):
         return context
 
 
-class EditProfile(LoginRequiredMixin, UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     """プロフィール編集"""
-    model = UserProfile
-    form_class = ProfileForm
-    # LoginRequiredMixinを使う際は定義する必要あり
+    model = User
+    form_class = UserUpdateForm
     login_url = '/login'
-    # templateをクラス汎用ビューのデフォルトから変える
-    template_name = "blog/profile_edit_form.html"
+    template_name = "blog/profile_edit.html"
+    slug_field = "nick_name"
+    slug_url_kwarg = "nick_name"
 
-    # バリデート後
+    def get_context_data(self, **kwargs):
+        context = super(ProfileEditView, self).get_context_data(**kwargs)
+        # 子フォームをつくる
+        context.update(dict
+                       (formset=ProfileFormSet(self.request.POST or None,
+                                               files=self.request.FILES or None, instance=self.object)))
+
+        return context
+
+    def get_success_url(self):
+        # <int:pk>はself.kwargsに{"pk": 2（int）}と辞書型にセットされているためpkを取得する
+        nick_name = self.kwargs['nick_name']
+        url = reverse_lazy("profile_detail", kwargs={"nick_name": nick_name})
+        return url
+
     def form_valid(self, form):
-        # self.requestオブジェクトに”更新しました。”を込める
-        messages.success(self.request, "更新しました。")
-        # super()で継承元の処理を返すのがお約束
-        return super().form_valid(form)
+        context = self.get_context_data()
+
+        formset = context['formset']
+        print(formset)
+        if formset.is_valid():
+            self.object = form.save(commit=False)
+            self.object.save()
+
+            formset.save()
+            messages.success(self.request, "更新しました。")
+            return redirect(self.get_success_url())
+
+        else:
+            context['form'] = form
+            messages.error(self.request, "更新に失敗しました。")
+            return self.render_to_response(context)
 
     def form_invalid(self, form):
         # self.requestオブジェクトに”更新に失敗しました。”を込める

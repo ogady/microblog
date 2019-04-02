@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import inlineformset_factory
 from .models import Blog,  Comment, UserProfile
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import get_user_model
@@ -88,7 +89,27 @@ class UserCreateForm(UserCreationForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields=['picture', 'bio']
+        fields = ['picture', 'bio']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+
+
+ProfileFormSet = inlineformset_factory(
+    parent_model=User,
+    model=UserProfile,
+    form=ProfileForm,
+    extra=1
+)
+
+
+class UserUpdateForm(forms.ModelForm):
+    """ユーザー更新用フォーム"""
+    class Meta:
+        model = User
+        fields = ['email', 'nick_name']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

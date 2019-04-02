@@ -55,6 +55,10 @@ urlpatterns = [
     # プロフィールとのルーティング
     path("<str:nick_name>/profile/", views.ProfileDetailView.as_view(template_name="blog/profile_detail.html")
          , name="profile_detail"),
+
+    # プロフィール編集とのルーティング
+    path("<str:nick_name>/edit_profile/", views.ProfileEditView.as_view(template_name="blog/profile_edit.html")
+         , name="profile_edit" ),
 ]
 
 # 画像UL用

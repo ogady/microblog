@@ -143,6 +143,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.email
 
+
 @receiver(post_save, sender=User)
 def create_profile(sender, **kwargs):
     """ 新ユーザー作成時に空のprofileも作成する """
