@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>
+                プロフィール
+            </h3>
+            <div class="row">
+                <div class="col-md-5">
+                    {% if object.picture %}
+                    <img src="{{ object.picture.url }}" class="img-circle img-responsive">
+                    {% else %}
+                    ※画像無
+                    {% endif %}
+                </div>
+                <div class="col-md-7">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>
+                                ユーザー名
+                            </b>
+                        </div>
+                        <div class="panel-body">
+                            {{ object.user.nick_name }}
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b>
+                                紹介文
+                            </b>
+                        </div>
+                        <div class="panel-body small">
+                            {{ object.bio }}
+                        </div>
+                    </div>
+                    {% if user.id == object.user.id %}
+                    <button type="button" class="btn btn-outline-secondary btn-block">
+                      <a href="{% url 'profile_edit' user.nick_name %}">
+                        編集
+                      </a>
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h3>
+                投稿一覧
+            </h3>
+            <div class="row">
+                {% for blog in blog_list %}
+                <div class="col-md-8">
+                    <blockquote class="blockquote">
+                        <div class="post-preview">
+                            <a href="{% url 'detail' blog.id %}">
+                                <h3 class="post-meta">
+                                    {{blog.content}}
+                                </h3>
+                            </a>
+                            {# timesinceは”|”で渡されたdateから現在までを計算するDjangoの組み込み関数 #}
+                            <p class="post-meta">
+                                {{blog.posted_date}} ｜投稿から {{blog.posted_date|timesince}}
+                            </p>
+                        </div>
+
+                    </blockquote>
+                </div>
+                <div class="col-md-4">
+                    {% if blog.photo %}
+                    <img src="{{ blog.photo.url }}" class="img-responsive">
+                    {% else %}
+                    ※画像なし
+                    {% endif %}
+                </div>
+                <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
