@@ -291,7 +291,6 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         context = self.get_context_data()
 
         formset = context['formset']
-        print(formset)
         if formset.is_valid():
             self.object = form.save(commit=False)
             self.object.save()
@@ -309,6 +308,23 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
         # self.requestオブジェクトに”更新に失敗しました。”を込める
         messages.error(self.request, "更新に失敗しました。")
         return super().form_invalid(form)
+
+
+class UserDeleteView(LoginRequiredMixin, TemplateView):
+    """プロフィール削除"""
+    # LoginRequiredMixinを先に継承しないとエラーになることがある
+    login_url = '/login'
+
+    def get(self, request, *args, **kwargs):
+        user = User.objects.get(nick_name=self.kwargs['nick_name'])
+
+        # is_active<-ユーザーアカウントをアクティブにするかどうかを指定,
+        # 退会処理も、is_activeをFalseにするという処理がベター。
+        user.is_active = False
+        user.save()
+        messages.error(self.request, "アカウントを削除しました。")
+
+        return redirect('index')
 
 
 def comment_create(request, blog_pk):

@@ -37,13 +37,10 @@
                         </div>
                     </div>
                     {% if user.id == object.user.id %}
-                    <button type="button" class="btn btn-outline-secondary">
+                    <button type="button" class="btn btn-outline-secondary btn-block">
                       <a href="{% url 'profile_edit' user.nick_name %}">
                         編集
                       </a>
-                    </button>
-                    <button type="button" class="btn btn-outline-danger">
-                        退会
                     </button>
                     {% endif %}
                 </div>

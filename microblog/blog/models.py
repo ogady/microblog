@@ -53,7 +53,7 @@ class Like(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                 related_name='profile')
-    picture = models.ImageField(upload_to='profile_pictures', blank=True, null=True)
+    picture = models.ImageField(upload_to='profile_pictures', blank=True, null=True,)
     bio = models.TextField(blank=True)
 
     def __str__(self):

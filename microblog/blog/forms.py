@@ -71,6 +71,8 @@ class LoginForm(AuthenticationForm):
 
 class UserCreateForm(UserCreationForm):
     """ユーザー登録用フォーム"""
+    email = forms.CharField(label='メールアドレス', required=False)
+    nick_name = forms.CharField(label='ニックネーム', required=False)
 
     class Meta:
         model = User
@@ -87,6 +89,10 @@ class UserCreateForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
+
+    picture = forms.ImageField(label='プロフィール画像', required=False)
+    bio = forms.CharField(label='紹介文', widget=forms.Textarea, required=False)
+
     class Meta:
         model = UserProfile
         fields = ['picture', 'bio']
@@ -101,12 +107,17 @@ ProfileFormSet = inlineformset_factory(
     parent_model=User,
     model=UserProfile,
     form=ProfileForm,
-    extra=1
+    extra=1,
+    can_delete=False
 )
 
 
 class UserUpdateForm(forms.ModelForm):
     """ユーザー更新用フォーム"""
+
+    email = forms.CharField(label='メールアドレス',)
+    nick_name = forms.CharField(label='ニックネーム', )
+
     class Meta:
         model = User
         fields = ['email', 'nick_name']
