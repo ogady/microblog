@@ -2,6 +2,8 @@
 アニメに関する感想をシェアするサービスです。
 SignUpして利用してください。
 
+Anicolle blog：https://anicolleblog.herokuapp.com/
+
 メニューバーにある”SIGNUP”からユーザー登録してください。
 自分用の簡単な独り言ブログが使用できるようになります。
 TEST用のユーザーも用意してるので試してみてください。
