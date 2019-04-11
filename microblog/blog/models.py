@@ -11,14 +11,24 @@ from django.dispatch import receiver
 
 
 # Create your models here.
+class Tag(models.Model):
+    """ タグ """
+
+    name = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Blog(models.Model):
+    """ ポスト"""
     content = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='anicolleblog', blank=True, null=True)
     anime_id = models.IntegerField(blank=True, null=True)
     anime = models.CharField(max_length=200, blank=True, null=True)
     posted_date = models.DateTimeField(auto_now_add=True)
+    tag = models.ManyToManyField(Tag, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like_num = models.IntegerField(default=0)
 
@@ -30,6 +40,7 @@ class Blog(models.Model):
 
 
 class Comment(models.Model):
+    """ コメント """
     content = models.TextField('コメント')
     post = models.ForeignKey(Blog, verbose_name='対象記事', on_delete=models.CASCADE)
     # selfはForrignKey(Comment)を意味する。
@@ -41,6 +52,7 @@ class Comment(models.Model):
 
 
 class Like(models.Model):
+    """ いいね """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                              related_name='like_user')
     post = models.ForeignKey(Blog, on_delete=models.CASCADE)
@@ -51,6 +63,7 @@ class Like(models.Model):
 
 
 class UserProfile(models.Model):
+    """ ユーザープロフィール """
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
                                 related_name='profile')
     picture = models.ImageField(upload_to='profile_pictures', blank=True, null=True,)

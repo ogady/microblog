@@ -9,14 +9,21 @@ User = get_user_model()
 class BlogForm(forms.ModelForm):
     """投稿フォーム"""
     user = User
-    content = forms.CharField(label='つぶやき', widget=forms.Textarea)
+    content = forms.CharField(label='つぶやき', widget=forms.Textarea(attrs={'placeholder': '(例)フリクリ最高！！'}))
     photo = forms.ImageField(label='画像', required=False)
+    tag = forms.CharField(label='タグ', required=False, widget=forms.TextInput(
+            attrs={'placeholder': '(例)フリクリ、鶴巻和哉,ガイナックス'}))
     anime = forms.CharField(label='アニメタイトル', required=False)
     anime_id = forms.IntegerField(label='アニメID', required=False)
 
     class Meta:
         model = Blog
         fields = ["user", "content", "photo", "anime_id", "anime"]
+
+
+TagInlineFormSet = forms.inlineformset_factory(
+    Blog, Blog.tag.through, fields='__all__', can_delete=False
+)
 
 
 class CommentForm(forms.ModelForm):
