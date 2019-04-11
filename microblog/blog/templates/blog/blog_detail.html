@@ -28,6 +28,15 @@
         {{object.content}}
         <a href="{% url 'profile_detail' object.user.nick_name %}" class="small">@{{object.user.nick_name}}</a>
     </h3>
+        {% if tags %}
+        タグ:
+            {% for tag in tags %}
+                <a  class="btn-gradient-radius">{{ tag }}</a>
+            {% endfor %}
+        <br>
+        <br>
+        {% endif %}
+    
     {% if object.photo %}
     <img src="{{ object.photo.url }}" class="img-responsive"><br>
     {% endif %}
@@ -68,8 +77,6 @@
         {% include 'blog/includes/reply.html' %}
         {% endwith %}
     </div>
-
-</div>
 </div>
 {% endfor %}
 {% endblock %}
