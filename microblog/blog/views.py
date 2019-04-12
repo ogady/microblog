@@ -304,13 +304,6 @@ class ProfileDetailView(DetailView):
     slug_field = "nick_name"  # モデルのフィールドの名前
     slug_url_kwarg = "nick_name"  # urls.pyでのキーワードの名前
 
-    # def get_queryset(self):
-    #     user_profile = UserProfile.objects.select_related('user').filter(user_id=self.request.user.id)
-    #     print(user_profile.query)
-    #     print(user_profile.value())
-    #     print(UserProfile.objects.filter(user_id=self.kwargs['pk']))
-    #     return user_profile
-
     def get_object(self, queryset=None):
         user_id = User.objects.get(nick_name=self.kwargs['nick_name'])
         return UserProfile.objects.get(user_id=user_id)
