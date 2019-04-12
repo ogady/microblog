@@ -23,9 +23,15 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-<a href="{% url 'create' %}" class="btn btn-primary">つぶやく</a>
+    <a href="{% url 'create' %}" class="btn btn-primary">つぶやく</a>
 {% endif %}
 <br>
+<br>
+{% if tag %}
+    <div>
+    タグに<a href="{% url 'tag_seach' tag %}" class="btn-gradient-radius">{{ tag }}</a>が含まれるつぶやき
+    </div>
+{% endif %}
 <br>
 {# {% %}　プログラム的な命令 #}
 {# {{ }}　値の表示 #}
@@ -40,6 +46,7 @@
         {% if blog.photo %}
         <p class="post-subtitle">※画像あり</p>
         {% endif %}
+
     </a>
 
     {# timesinceは”|”で渡されたdateから現在までを計算するDjangoの組み込み関数 #}
