@@ -80,9 +80,15 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
             blog.save()
 
             for tag in tag_list:
-                tag_obj = Tag(name=tag)
-                tag_obj.save()
-                blog.tag.add(tag_obj)
+
+                exist_tag = Tag.objects.get(name=tag)
+
+                if exist_tag:
+                    blog.tag.add(exist_tag)
+                else:
+                    tag_obj = Tag(name=tag)
+                    tag_obj.save()
+                    blog.tag.add(tag_obj)
 
             messages.success(self.request, "保存しました。")
             return super().form_valid(form)
@@ -144,9 +150,15 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
         blog.tag.clear()
 
         for tag in tag_list:
-            tag_obj = Tag(name=tag)
-            tag_obj.save()
-            blog.tag.add(tag_obj)
+
+            exist_tag = Tag.objects.get(name=tag)
+
+            if exist_tag:
+                blog.tag.add(exist_tag)
+            else:
+                tag_obj = Tag(name=tag)
+                tag_obj.save()
+                blog.tag.add(tag_obj)
 
         messages.success(self.request, "更新しました。")
         return super().form_valid(form)
