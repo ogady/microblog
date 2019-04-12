@@ -31,7 +31,7 @@
         {% if tags %}
         タグ:
             {% for tag in tags %}
-                <a  class="btn-gradient-radius">{{ tag }}</a>
+                <a href="{% url 'tag_seach' tag %}" class="btn-gradient-radius">{{ tag }}</a>
             {% endfor %}
         <br>
         <br>

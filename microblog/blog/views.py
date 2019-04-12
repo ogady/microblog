@@ -31,6 +31,21 @@ class BlogListView(ListView):
     paginate_by = 10
 
 
+class BlogByTagList(ListView):
+    model = Blog
+    context_object_name = "blog_list"
+    paginate_by = 10
+    slug_field = "tag"
+    slug_url_kwarg = "tag"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        tag = Tag.objects.get(name=self.kwargs['tag'])
+        context['blog_list'] = Blog.objects.filter(tag=tag)
+        context['tag'] = tag
+        return context
+
+
 class BlogDetailView(DetailView):
     model = Blog
 

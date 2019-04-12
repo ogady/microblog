@@ -26,6 +26,7 @@ urlpatterns = [
     # path('<URL>', views関数, ニックネーム(任意)),
     path('admin/', admin.site.urls),
     path('', views.BlogListView.as_view(), name="index"),
+    path('tag/<str:tag>', views.BlogByTagList.as_view(), name="tag_seach"),
 
     # 受け取ったintをpkに代入する
     path('<int:pk>', views.BlogDetailView.as_view(), name="detail"),

@@ -1,6 +1,6 @@
 from django.test import TestCase
-from microblog.blog import models
-from microblog.blog import forms
+from blog import models
+from blog import forms
 # Create your tests here.
 
 
