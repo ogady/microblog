@@ -14,7 +14,7 @@ from .exeption_models import BaseManager
 class Tag(models.Model):
     """ タグ """
     objects = BaseManager()
-    name = models.CharField(max_length=255, null=False)
+    name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
