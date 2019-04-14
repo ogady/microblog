@@ -3,7 +3,7 @@
 {% block body %}
 <h1>新規作成</h1>
 <form method="post" enctype="multipart/form-data">
-    <div class="form-group row">
+    <div class="form-group row ">
         {% csrf_token %}
         {{ formset.management_form }}
         <input type="hidden" name="user" id="id_user" value="{{ user.id }}">

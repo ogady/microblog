@@ -8,12 +8,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
 from django.dispatch import receiver
+from .exeption_models import BaseManager
 
 
-# Create your models here.
 class Tag(models.Model):
     """ タグ """
-
+    objects = BaseManager()
     name = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
 
