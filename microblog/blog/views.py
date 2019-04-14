@@ -10,6 +10,7 @@ from django.http.response import JsonResponse
 from .models import Blog, Comment, Like, UserProfile, Tag
 from .forms import BlogForm, SearchForm, UserCreateForm, LoginForm, \
     CommentForm, UserUpdateForm, ProfileFormSet, TagInlineFormSet
+from .exeption_models import BaseManager
 import requests
 import re
 
@@ -96,7 +97,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
 
             for tag in tag_list:
 
-                exist_tag = Tag.objects.get(name=tag)
+                exist_tag = Tag.objects.get_or_none(name=tag)
 
                 if exist_tag:
                     blog.tag.add(exist_tag)
@@ -166,7 +167,7 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
 
         for tag in tag_list:
 
-            exist_tag = Tag.objects.get(name=tag)
+            exist_tag = Tag.objects.get_or_none(name=tag)
 
             if exist_tag:
                 blog.tag.add(exist_tag)
