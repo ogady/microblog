@@ -13,15 +13,15 @@
         </div>
         <div class="form-group">
             {{ form.photo.label }}:
-            {{ form.photo|add_class:'form-control, btn btn-default' }}
+            {{ form.photo|add_class:'form-control' }}
         </div>
         <div class="form-group">
             {{ form.tag.label }}:
             {% if tags %}
             {% for tag in tags %}
-                <a  class="btn-gradient-radius">{{ tag }}</a>
+            <a class="btn-gradient-radius">{{ tag }}</a>
             {% endfor %}
-        {% endif %}
+            {% endif %}
             {{ form.tag|add_class:'form-control' }}
             <div class="small">※空欄の場合は更新されません。</div>
         </div>

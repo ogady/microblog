@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LogoutView
-from blog import views
 from blog.views import blog_view, blog_option_view, user_view, anime_search_view
 
 # 画像UL用
@@ -17,6 +16,7 @@ urlpatterns = [
     # 受け取ったintをpkに代入する
     path('<int:pk>', blog_view.BlogDetailView.as_view(), name="detail"),
     path('create', blog_view.BlogCreateView.as_view(), name="create"),
+    path('create_by_anime', blog_view.BlogByAnimeCreateView.as_view(), name="create_by_anime"),
     path('<int:pk>/update', blog_view.BlogUpdateView.as_view(), name="update"),
     path('<int:pk>/delete', blog_view.BlogDeleteView.as_view(), name="delete"),
 

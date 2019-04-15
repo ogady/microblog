@@ -81,15 +81,16 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
             blog.save()
 
             for tag in tag_list:
+                tag = tag.strip()
+                if tag != "":
+                    exists_tag = Tag.objects.get_or_none(name=tag)
 
-                exist_tag = Tag.objects.get_or_none(name=tag)
-
-                if exist_tag:
-                    blog.tag.add(exist_tag)
-                else:
-                    tag_obj = Tag(name=tag)
-                    tag_obj.save()
-                    blog.tag.add(tag_obj)
+                    if exists_tag:
+                        blog.tag.add(exists_tag)
+                    else:
+                        tag_obj = Tag(name=tag)
+                        tag_obj.save()
+                        blog.tag.add(tag_obj)
 
             messages.success(self.request, "保存しました。")
             return super().form_valid(form)
@@ -103,6 +104,16 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
         # self.requestオブジェクトに”保存に失敗しました。”を込める
         messages.error(self.request, "保存に失敗しました。")
         return super().form_invalid(form)
+
+
+class BlogByAnimeCreateView(BlogCreateView):
+
+    def get_context_data(self, **kwargs):
+        anime = self.request.GET.get("anime")
+        context = super(BlogByAnimeCreateView, self).get_context_data(**kwargs)
+        context.update(dict(formset=TagInlineFormSet(self.request.POST or None, instance=self.object, initial=anime)))
+
+        return context
 
 
 class BlogUpdateView(LoginRequiredMixin, UpdateView):
@@ -151,15 +162,16 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
         blog.tag.clear()
 
         for tag in tag_list:
+            tag = tag.strip()
+            if tag != "":
+                exists_tag = Tag.objects.get_or_none(name=tag)
 
-            exist_tag = Tag.objects.get_or_none(name=tag)
-
-            if exist_tag:
-                blog.tag.add(exist_tag)
-            else:
-                tag_obj = Tag(name=tag)
-                tag_obj.save()
-                blog.tag.add(tag_obj)
+                if exists_tag:
+                    blog.tag.add(exists_tag)
+                else:
+                    tag_obj = Tag(name=tag)
+                    tag_obj.save()
+                    blog.tag.add(tag_obj)
 
         messages.success(self.request, "更新しました。")
         return super().form_valid(form)

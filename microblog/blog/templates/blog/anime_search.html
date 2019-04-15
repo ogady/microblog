@@ -26,7 +26,7 @@
 {% if anime_list %}
 {% for anime in anime_list %}
 
-<a href="{% url 'create' %}?anime={{ anime.title }}&anime_id={{ anime.id }}" class="btn btn-default btn-block">
+<a href="{% url 'index' %}?anime={{ anime.title }}&anime_id={{ anime.id }}" class="btn btn-default btn-block">
     {{ anime.title }}
 </a>
 
