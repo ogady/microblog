@@ -3237,15 +3237,6 @@ fieldset[disabled] .btn-success.focus {
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
-.btn-gradient-radius {
-  display: inline-block;
-  padding: 0.5px 10px;
-  border-radius: 25px;
-  text-decoration: none;
-  color: #00BCD4;
-  background: #ECECEC;
-  transition: .4s;
-}
 
 .btn-gradient-tags {
   display: inline-block;
