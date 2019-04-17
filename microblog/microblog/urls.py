@@ -16,7 +16,7 @@ urlpatterns = [
     # 受け取ったintをpkに代入する
     path('<int:pk>', blog_view.BlogDetailView.as_view(), name="detail"),
     path('create', blog_view.BlogCreateView.as_view(), name="create"),
-    path('create_by_anime', blog_view.BlogByAnimeCreateView.as_view(), name="create_by_anime"),
+    path('create_by_anime/<str:anime>', blog_view.BlogByAnimeCreateView.as_view(), name="create_by_anime"),
     path('<int:pk>/update', blog_view.BlogUpdateView.as_view(), name="update"),
     path('<int:pk>/delete', blog_view.BlogDeleteView.as_view(), name="delete"),
 

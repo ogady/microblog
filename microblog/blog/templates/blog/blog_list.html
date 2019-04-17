@@ -23,13 +23,13 @@
 {% endif %}
 
 {% if user.is_authenticated %}
-    <a href="{% url 'create' %}" class="btn btn-primary">つぶやく</a>
+    <a href="{% url 'create' %}" class="btn btn-primary">投稿する</a>
 {% endif %}
 <br>
 <br>
 {% if tag %}
     <div>
-    タグに<a href="{% url 'tag_seach' tag %}" class="btn-gradient-radius">{{ tag }}</a>が含まれるつぶやき
+    タグに<a href="{% url 'tag_seach' tag %}" class="btn-gradient-radius">{{ tag }}</a>付いた投稿
     </div>
 {% endif %}
 <br>

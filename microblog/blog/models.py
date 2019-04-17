@@ -25,8 +25,6 @@ class Blog(models.Model):
     """ ポスト"""
     content = models.CharField(max_length=255)
     photo = models.ImageField(upload_to='anicolleblog', blank=True, null=True)
-    anime_id = models.IntegerField(blank=True, null=True)
-    anime = models.CharField(max_length=200, blank=True, null=True)
     posted_date = models.DateTimeField(auto_now_add=True)
     tag = models.ManyToManyField(Tag, blank=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

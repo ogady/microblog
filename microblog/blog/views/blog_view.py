@@ -26,9 +26,14 @@ class BlogByTagList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        tag = Tag.objects.get(name=self.kwargs['tag'])
+        tag = Tag.objects.get_or_none(name=self.kwargs['tag'])
         context['blog_list'] = Blog.objects.filter(tag=tag)
         context['tag'] = tag
+
+        if not tag:
+
+            messages.error(self.request, str("タグに「" + self.kwargs['tag'] + "」がつく投稿はありません"))
+
         return context
 
 
@@ -107,13 +112,18 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
 
 
 class BlogByAnimeCreateView(BlogCreateView):
+    slug_field = "anime"
+    slug_url_kwarg = "anime"
 
     def get_context_data(self, **kwargs):
-        anime = self.request.GET.get("anime")
         context = super(BlogByAnimeCreateView, self).get_context_data(**kwargs)
-        context.update(dict(formset=TagInlineFormSet(self.request.POST or None, instance=self.object, initial=anime)))
-
+        context.update(dict(formset=TagInlineFormSet(self.request.POST or None, instance=self.object)))
         return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial["tag"] = self.kwargs['anime']
+        return initial
 
 
 class BlogUpdateView(LoginRequiredMixin, UpdateView):
@@ -133,6 +143,14 @@ class BlogUpdateView(LoginRequiredMixin, UpdateView):
 
         context['tags'] = tag_list
         return context
+
+    def get_initial(self):
+        initial = super().get_initial()
+        tags = self.object.tag.filter(blog=self.kwargs['pk'])
+        tag_list = (','.join([str(tag) for tag in tags]))
+
+        initial["tag"] = tag_list
+        return initial
 
     # success_urlを自作する
     def get_success_url(self):

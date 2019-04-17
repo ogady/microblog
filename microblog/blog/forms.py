@@ -13,12 +13,10 @@ class BlogForm(forms.ModelForm):
     photo = forms.ImageField(label='画像', required=False)
     tag = forms.CharField(label='タグ', required=False, widget=forms.TextInput(
             attrs={'placeholder': '(例)フリクリ、鶴巻和哉,ガイナックス'}))
-    anime = forms.CharField(label='アニメタイトル', required=False)
-    anime_id = forms.IntegerField(label='アニメID', required=False)
 
     class Meta:
         model = Blog
-        fields = ["user", "content", "photo", "anime_id", "anime"]
+        fields = ["user", "content", "photo",]
 
 
 TagInlineFormSet = forms.inlineformset_factory(
