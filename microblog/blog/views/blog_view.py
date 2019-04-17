@@ -27,13 +27,14 @@ class BlogByTagList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         tag = Tag.objects.get_or_none(name=self.kwargs['tag'])
-        context['blog_list'] = Blog.objects.filter(tag=tag)
-        context['tag'] = tag
 
         if not tag:
-
             messages.error(self.request, str("タグに「" + self.kwargs['tag'] + "」がつく投稿はありません"))
+            context['blog_list'] = Blog.objects.all()
+            return context
 
+        context['blog_list'] = Blog.objects.filter(tag=tag)
+        context['tag'] = tag
         return context
 
 
