@@ -2,6 +2,11 @@
 {% load widget_tweaks %}
 {% block body %}
 <h1>アニメを探す</h1>
+<div class="post-preview">
+    <p class="post-meta">
+        アニメに関する投稿を探したり、タグ付け投稿したりできます。
+    </p>
+</div>
 <form action="{% url 'search' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <table class="table">
@@ -18,18 +23,32 @@
     </table>
     <div class="form-group row">
         <div class="col-sm">
-            <button type="submit" class="btn btn-primary btn-block" name='action' value="search">SEARCH</button>
+            <button type="submit" class="btn btn-primary btn-block" name='action' value="search">アニメを探す</button>
         </div>
     </div>
 </form>
 <br>
 {% if anime_list %}
 {% for anime in anime_list %}
-
-<a href="{% url 'index' %}?anime={{ anime.title }}&anime_id={{ anime.id }}" class="btn btn-default btn-block">
-    {{ anime.title }}
-</a>
-
+<blockquote class="blockquote">
+    <div class="row">
+        <div class="col-md-12">
+            <h4>{{ anime.title }}</h4>
+        </div>
+    </div>
+    <div class="btn-group" role="group">
+        <a href= "{% url 'tag_seach' anime.title  %}" class="btn btn-secondary btn-default">
+            <div class="post-preview">
+                <div class="post-meta">投稿を探す</div>
+            </div>
+        </a>
+        <a href= "{% url 'create_by_anime' anime.title%}" class="btn btn-secondary btn-default">
+            <div class="post-preview">
+                <div class="post-meta">投稿をする</div>
+            </div>
+        </a>
+    </div>
+</blockquote>
 {% endfor%}
 {% if anime_list %}
 <nav aria-label="Page navigation">
