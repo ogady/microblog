@@ -18,77 +18,89 @@
             request.send();
         }
 
+
     </script>
 </head>
 {# {% %}　プログラム的な命令 #}
 {# {{ }}　値の表示 #}
 {# object==データが入っている変数、デフォルト値 #}
+
 <div class="post-preview">
-    {% if tags %}
-    タグ:
-    {% for tag in tags %}
-    <a href="{% url 'tag_seach' tag %}" class="btn-gradient-radius">{{ tag }}</a>
-    {% endfor %}
-    {% endif %}
-
-    <h3 class="post-title">
-        {{object.content}}
-        <br><a href="{% url 'profile_detail' object.user.nick_name %}" class="small">@{{object.user.nick_name}}</a>
-    </h3>
-    <br>
-
-
-    {% if object.photo %}
-    <img src="{{ object.photo.url }}" class="img-responsive"><br>
-    {% endif %}
-
-    <div class="post-meta row">
-
+    <div class="row">
         <div class="col-xs-12">
-            {{object.posted_date|date:"Y/m/d h:m:s"}}
-        </div>
-        <div class="col-md-10 col-sm-9 col-xs-7">
-            <a onclick="api_like()" class="btn-gradient-radius"><span id="like">{{ like_cnt }} </span>いいね！</a>
-        </div>
-
-        <div class="col-md-2 col-sm-3 col-xs-5 small">
-            {% if user.is_authenticated and user.id == object.user.id%}
-            <a href="{% url 'update' object.id %}">編集</a>
-            /
-            <a href="{% url 'delete' object.id %}">削除</a>
+            {% if tags %}
+            タグ:
+            {% for tag in tags %}
+            <a href="{% url 'tag_seach' tag %}" class="btn-gradient-radius">{{ tag }}</a>
+            {% endfor %}
             {% endif %}
         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-7">
+            <h3 class="post-title">
+                <a href="{% url 'profile_detail' object.user.nick_name %}" class="small">@{{object.user.nick_name}}</a>
+                <br>
+                {{object.content}}
+            </h3>
+            <br>
+        </div>
+        {% if object.photo %}
+        <div class="col-sm-5">
+            <p>
+            <img src="{{ object.photo.url }}" class="img-responsive"><br>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<div class="post-meta row">
 
+    <div class="col-xs-12">
+        {{object.posted_date|date:"Y/m/d h:m:s"}}
+    </div>
+    <div class="col-md-10 col-sm-9 col-xs-7">
+        <a onclick="api_like()" class="btn-gradient-radius"><span id="like">{{ like_cnt }} </span>いいね！</a>
+    </div>
+
+    <div class="col-md-2 col-sm-3 col-xs-5 small">
+        {% if user.is_authenticated and user.id == object.user.id%}
+        <a href="{% url 'update' object.id %}">編集</a>
+        /
+        <a href="{% url 'delete' object.id %}">削除</a>
+        {% endif %}
+    </div>
+
+</div>
+<br>
+{% if not user.is_authenticated %}
+<p class="post-meta">※いいね機能を使うにはログインしてください</p>
+{% endif %}
+<div class="form-group row">
+    <a href="{% url 'comment_create' object.pk %}" class="btn btn-info btn-block">コメントする</a>
+</div>
+<div class="form-group row">
+    <div class="col-sm">
+        <a href="{% url 'index' %}" class="btn btn-default btn-block">戻る</a>
+    </div>
+</div>
+<hr>
+<h4 class="title is-5">コメント一覧</h4>
+{% for comment in comment_list %}
+<div class="post-preview">
+    <div class="post-meta">
+
+        {{ comment.content }}
+        <div class="pull-right ">
+            <small>{{ comment.commented_date }}</small>
+        </div>
     </div>
     <br>
-    {% if not user.is_authenticated %}
-    <p class="post-meta">※いいね機能を使うにはログインしてください</p>
-    {% endif %}
-    <div class="form-group row">
-        <a href="{% url 'comment_create' object.pk %}" class="btn btn-info btn-block">コメントする</a>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm">
-            <a href="{% url 'index' %}" class="btn btn-default btn-block">戻る</a>
-        </div>
-    </div>
-    <hr>
-    <h4 class="title is-5">コメント一覧</h4>
-    {% for comment in comment_list %}
-    <div class="post-preview">
-        <div class="post-meta">
-
-            {{ comment.content }}
-            <div class="pull-right ">
-                <small>{{ comment.commented_date }}</small>
-            </div>
-        </div>
-        <br>
-        <a href="{% url 'reply_create' comment.pk %}" class="btn">返信する</a>
-        {% with reply_list=comment.comment_set.all %}
-        {% include 'blog/includes/reply.html' %}
-        {% endwith %}
-    </div>
+    <a href="{% url 'reply_create' comment.pk %}" class="btn">返信する</a>
+    {% with reply_list=comment.comment_set.all %}
+    {% include 'blog/includes/reply.html' %}
+    {% endwith %}
+</div>
 </div>
 {% endfor %}
 {% endblock %}
